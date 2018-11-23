@@ -36,13 +36,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Route myRoute1 = new Route("1800","Sir Run Run Shaw Hall","University MTR Station");
-        BusStop[] stopsArray = new BusStop[stops.size()];
+        final BusStop[] stopsArray = new BusStop[stops.size()];
         stops.toArray(stopsArray);
         myRoute1.computeLine(stopsArray, buses);
 
         stopsArray[3].calculateTime(buses);
         //stopsArray[3].waitingTime(1313);
-        stopInfo = stopsArray[3].waitingTime(1422);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent select_stop = new Intent(MainActivity.this, SelectStop.class);
+                select_stop.putExtra("stops",stopsArray);
                 startActivity(select_stop);
             }
         });

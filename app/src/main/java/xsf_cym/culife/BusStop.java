@@ -1,8 +1,9 @@
 package xsf_cym.culife;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class BusStop{
+public class BusStop implements Serializable {
     boolean[] passLines=new boolean[12];
     String stopName;
     int[][] standardTime = new int[12][];
