@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <Button
+        android:id="@+id/select_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Slect a stop"
+        android:textAllCaps="false"
+        android:background="@android:color/transparent"
+        android:drawableTop="@drawable/bus"
+        android:layout_toRightOf="@id/add_new_route"
+        android:layout_below="@id/add_new_route"/>
+    <Button
+        android:id="@+id/add_new_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add a new route"
+        android:textAllCaps="false"
+        android:drawableBottom="@drawable/add"
+        android:background="@android:color/transparent"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:id="@+id/my_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My route"
+        android:textAllCaps="false"
+        android:background="@android:color/transparent"
+        android:drawableTop="@drawable/route"
+        android:layout_below="@id/add_new_route"
+        android:layout_toLeftOf="@id/add_new_route"/>
+
+</RelativeLayout>
