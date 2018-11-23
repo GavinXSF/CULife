@@ -10,10 +10,40 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
+    private ArrayList<String> stopInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Bus[] buses = new Bus[12];
+        String[] lineNum = {"1A","2","3","4","5","6A","7","8","N","H","6B","1B"};
+        for(int i = 0; i < 12; i++){
+            buses[i] = new Bus(lineNum[i]);
+        }
+        System.out.println( buses[0].passStops.get(3) );
+        ArrayList<BusStop> stops = new ArrayList<BusStop>();
+        ArrayList<String> initializedStops = new ArrayList<String>();
+        for(int i = 0; i < 12; i++){
+            for(int j = 0; j < buses[i].passStops.size(); j++){
+                if(!initializedStops.contains(buses[i].passStops.get(j))){
+                    initializedStops.add(buses[i].passStops.get(j));
+                    stops.add(new BusStop(buses[i].passStops.get(j), buses));
+                }
+            }
+        }
+
+        Route myRoute1 = new Route("1800","Sir Run Run Shaw Hall","University MTR Station");
+        BusStop[] stopsArray = new BusStop[stops.size()];
+        stops.toArray(stopsArray);
+        myRoute1.computeLine(stopsArray, buses);
+
+        stopsArray[3].calculateTime(buses);
+        //stopsArray[3].waitingTime(1313);
+        stopInfo = stopsArray[3].waitingTime(1422);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
