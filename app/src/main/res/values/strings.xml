@@ -1,3 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CULife</string>
+
+        <string-array name="stopName">
+            <item>Yasumoto International Academic Park</item>
+            <item>University Sports Centre</item>
+            <item>Science Centre</item>
+            <item>Fung King-hey Building</item>
+            <item>Residences 3  4</item>
+            <item>Shaw College</item>
+            <item>C.W. Chu College</item>
+            <item>Residence 15</item>
+            <item>United College Staff Residence</item>
+            <item>Chan Chun Ha Hostel</item>
+            <item>University Administration Building</item>
+            <item>S.H. Ho College</item>
+            <item>University MTR Station Piazza</item>
+        </string-array>
+        <string-array name="timePoint_min">
+            <item>0</item>
+            <item>5</item>
+            <item>10</item>
+            <item>15</item>
+            <item>20</item>
+            <item>25</item>
+            <item>30</item>
+            <item>35</item>
+            <item>40</item>
+            <item>45</item>
+            <item>50</item>
+            <item>55</item>
+        </string-array>
+        <string-array name="timePoint_hour">
+            <item>8</item>
+            <item>9</item>
+            <item>10</item>
+            <item>11</item>
+            <item>12</item>
+            <item>13</item>
+            <item>14</item>
+            <item>15</item>
+            <item>16</item>
+            <item>17</item>
+            <item>18</item>
+            <item>19</item>
+            <item>20</item>
+            <item>21</item>
+            <item>22</item>
+            <item>23</item>
+        </string-array>
+
+
 </resources>
