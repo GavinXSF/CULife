@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         AddNewRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent add_new_route = new Intent(MainActivity.this, SelectStop.class);
+                Intent add_new_route = new Intent(MainActivity.this, AddNewRoute.class);
                 startActivity(add_new_route);
             }
         });

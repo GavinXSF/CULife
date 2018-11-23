@@ -12,18 +12,18 @@
         android:text="Slect a stop"
         android:textAllCaps="false"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/bus"
+        android:drawableBottom="@drawable/bus"
         android:layout_toRightOf="@id/add_new_route"
-        android:layout_below="@id/add_new_route"/>
+        android:layout_above="@id/add_new_route"/>
     <Button
         android:id="@+id/add_new_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add a new route"
         android:textAllCaps="false"
-        android:drawableBottom="@drawable/add"
+        android:drawableTop="@drawable/add"
         android:background="@android:color/transparent"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerInParent="true"/>
     <Button
         android:id="@+id/my_route"
         android:layout_width="wrap_content"
@@ -31,8 +31,8 @@
         android:text="My route"
         android:textAllCaps="false"
         android:background="@android:color/transparent"
-        android:drawableTop="@drawable/route"
-        android:layout_below="@id/add_new_route"
+        android:drawableBottom="@drawable/route"
+        android:layout_above="@id/add_new_route"
         android:layout_toLeftOf="@id/add_new_route"/>
 
 </RelativeLayout>

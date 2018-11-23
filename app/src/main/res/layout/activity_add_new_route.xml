@@ -1,14 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/new_route_input"
-        android:text="Please input startPosition-endPosition-endTime"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/start_time_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:entries="@array/timePoint_hour"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="110dp"
+        >
 
-</LinearLayout>
+    </Spinner>
+
+    <Spinner
+        android:id="@+id/start_time_minutes"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:entries="@array/timePoint_min"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/start_time_hours"
+        android:layout_toEndOf="@id/start_time_hours"
+        android:layout_marginLeft="30dp">
+    </Spinner>
+
+    <Spinner
+        android:id="@+id/startpos_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:entries="@array/stopName"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/start_time_hours"
+        android:layout_marginBottom="40dp">
+    </Spinner>
+
+    <Spinner
+        android:id="@+id/endstops_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:entries="@array/stopName"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/start_time_hours"
+        android:layout_marginTop="40dp">
+    </Spinner>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/start"
+        android:text="Start Stop"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/startpos_spinner"
+        android:textColor="#26c6da"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/stop"
+        android:text="End Stop"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/start_time_hours"
+        android:layout_marginTop="25dp"
+        android:textColor="#009688"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/hours"
+        android:text="Hour"
+        android:layout_alignStart="@id/start_time_hours"
+        android:layout_alignLeft="@id/start_time_hours"
+        android:layout_above="@id/start_time_hours"
+        android:layout_marginBottom="2dp"
+        android:textColor="#2196f3"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/minutes"
+        android:text="Munite"
+        android:layout_alignLeft="@id/start_time_minutes"
+        android:layout_alignStart="@id/start_time_minutes"
+        android:layout_above="@id/start_time_minutes"
+        android:layout_marginBottom="2dp"
+        android:textColor="#2196f3"/>
+
+
+
+</RelativeLayout>
