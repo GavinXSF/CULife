@@ -60,4 +60,27 @@ public class BusStop implements Serializable {
         }
         return(displayInfo);
     }
+    public ArrayList<String> waitingTime(int startTime, boolean[] filters){
+        ArrayList<String> displayInfo = new ArrayList<String>();
+        int index = 0;
+        for(int i = 0; i < 12; i++){
+            if(passLines[i]){
+                int nearestTime = 60;
+                for(int j = 0; j < sizeOfPeriod[i]; j++){
+                    int wait = 0;
+                    if((startTime % 100) > standardTime[i][j])
+                        wait = standardTime[i][j] + 60 - (startTime % 100);
+                    else
+                        wait = standardTime[i][j] - (startTime % 100);
+                    if(wait < nearestTime)
+                        nearestTime = wait;
+                }
+                if(filters[i])
+                    displayInfo.add("Line "+ lineNum.get(index) + ": " + nearestTime + " mins\n" );
+                index++;
+
+            }
+        }
+        return(displayInfo);
+    }
 }
