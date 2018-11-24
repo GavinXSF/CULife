@@ -40,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
         stops.toArray(stopsArray);
         myRoute1.computeLine(stopsArray, buses);
 
-        stopsArray[3].calculateTime(buses);
+        for(int i = 0; i < stops.size(); i++){
+            stopsArray[i].calculateTime(buses);
+        }
+
         //stopsArray[3].waitingTime(1313);
 
 

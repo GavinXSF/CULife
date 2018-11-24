@@ -8,7 +8,7 @@ public class BusStop implements Serializable {
     String stopName;
     int[][] standardTime = new int[12][];
     int[] sizeOfPeriod = new int[12];
-
+    ArrayList<String> lineNum = new ArrayList<>();
     public BusStop(String name, Bus[] buses){
         stopName = name;
         for(int i=0;i<12;i++){
@@ -19,6 +19,7 @@ public class BusStop implements Serializable {
     public void calculateTime(Bus[] buses){
         for(int i = 0; i < 12; i++){  
             if(passLines[i]){
+                lineNum.add(buses[i].busNum);
                 int sumOfTime = 0;
                 for(int j = 0; j < buses[i].passStops.indexOf(stopName); j++){
                     sumOfTime += buses[i].interval.get(j);
@@ -39,6 +40,7 @@ public class BusStop implements Serializable {
     }
     public ArrayList<String> waitingTime(int startTime){
         ArrayList<String> displayInfo = new ArrayList<String>();
+        int index = 0;
         for(int i = 0; i < 12; i++){
             if(passLines[i]){
                 int nearestTime = 60;
@@ -51,7 +53,8 @@ public class BusStop implements Serializable {
                     if(wait < nearestTime)
                         nearestTime = wait;
                 }
-                displayInfo.add("Line "+ (i+1) + ": " + nearestTime + " mins\n" );
+                displayInfo.add("Line "+ lineNum.get(index) + ": " + nearestTime + " mins\n" );
+                index++;
 
             }
         }
