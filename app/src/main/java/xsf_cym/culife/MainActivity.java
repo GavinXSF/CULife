@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < 12; i++){
             buses[i] = new Bus(lineNum[i]);
         }
+        final Bus[] buses_final = buses;
         System.out.println( buses[0].passStops.get(3) );
         ArrayList<BusStop> stops = new ArrayList<BusStop>();
         final ArrayList<String> initializedStops = new ArrayList<String>();
@@ -35,10 +36,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Route myRoute1 = new Route("1800","Sir Run Run Shaw Hall","University MTR Station");
+
         final BusStop[] stopsArray = new BusStop[stops.size()];
         stops.toArray(stopsArray);
-        myRoute1.computeLine(stopsArray, buses);
+
 
         for(int i = 0; i < stops.size(); i++){
             stopsArray[i].calculateTime(buses);
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent add_new_route = new Intent(MainActivity.this, AddNewRoute.class);
                 add_new_route.putExtra("stop_names",initializedStops);
+                add_new_route.putExtra("stops",stopsArray);
+                add_new_route.putExtra("buses",buses_final);
                 startActivity(add_new_route);
             }
         });
@@ -77,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent my_route = new Intent(MainActivity.this, MyRoute.class);
+                my_route.putExtra("stops",stopsArray);
+                my_route.putExtra("buses",buses_final);
+                my_route.putExtra("stop_names",initializedStops);
                 startActivity(my_route);
             }
         });

@@ -2,6 +2,7 @@ package xsf_cym.culife;
 
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,8 +26,13 @@ public class AddNewRoute extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_route);
+
         Intent intent = getIntent();
-        ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
+        final BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
+        final Bus[] buses = (Bus[]) intent.getSerializableExtra("buses");
+        final ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
+
+
         final String[] stopData = stopNames.toArray(new String[stopNames.size()]);
         final String[] timeHours = getResources().getStringArray(R.array.timePoint_hour);
         final String[] timeMins = getResources().getStringArray(R.array.timePoint_min);
@@ -99,7 +105,8 @@ public class AddNewRoute extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v)  {
-               File newFile = new File(AddNewRoute.this.getExternalFilesDir(null).getAbsolutePath());
+
+               File newFile = new File(AddNewRoute.this.getFilesDir().getAbsolutePath(), "my_route.txt");
                try {
                    FileWriter writer = new FileWriter(newFile, true);
                    BufferedWriter bfWriter = new BufferedWriter(writer);
@@ -109,11 +116,14 @@ public class AddNewRoute extends AppCompatActivity {
                    bfWriter.newLine();
                    bfWriter.write(endStop);
                    bfWriter.newLine();
-               }
-               catch(Exception e){
+               } catch (Exception e) {
 
                }
+
                Intent myRoute = new Intent(AddNewRoute.this,MyRoute.class);
+               myRoute.putExtra("stops",stopsArray);
+               myRoute.putExtra("buses",buses);
+               myRoute.putExtra("stop_names",stopNames);
                startActivity(myRoute);
            }
          });

@@ -1,23 +1,17 @@
 package xsf_cym.culife;
 
 public class Route{
-    String startTime;
+    int startTime;
     String startPosition;
     String destination;
-    boolean[] validBus = new boolean[12]; //考虑改成bool[]
+    boolean[] validBus = new boolean[12];
 
-    public Route(String inputTime, String departure, String dest){
+    public Route(int inputTime, String departure, String dest){
         startTime = inputTime;
         startPosition = departure;
         destination = dest;
     }
 
-    public Route(String inputTime, String departure, String dest, boolean[] lineNum){
-        startTime = inputTime;
-        startPosition = departure;
-        destination = dest;
-        validBus = lineNum;
-    }
     public void computeLine(BusStop[] stops, Bus[] buses){//figure out which buses can be taken and store them in validBus
         boolean[] startStopLines,endStopLines,results;
         startStopLines = new boolean[12];
@@ -44,9 +38,7 @@ public class Route{
         validBus = results;
     }
 
-    public void storeRoute(){//store the route info to a local file
 
-    }
 
 
 }

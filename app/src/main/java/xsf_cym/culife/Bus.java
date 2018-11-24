@@ -1,7 +1,8 @@
 package xsf_cym.culife;
+import java.io.Serializable;
 import java.util.*;
 
-public class Bus{
+public class Bus implements Serializable {
     String busNum;
     ArrayList<String> passStops = new ArrayList<String>();
     ArrayList<Integer> interval = new ArrayList<Integer>();//use data analysis to modify this
