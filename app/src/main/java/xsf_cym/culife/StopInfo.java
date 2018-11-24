@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class StopInfo extends AppCompatActivity {
@@ -20,5 +21,6 @@ public class StopInfo extends AppCompatActivity {
         myListView = (ListView) findViewById(R.id.myListView);
         myAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,stopInfo);
         myListView.setAdapter(myAdapter);
+
     }
 }

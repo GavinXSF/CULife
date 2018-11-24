@@ -1,16 +1,20 @@
 package xsf_cym.culife;
 
-import android.app.TimePickerDialog;
+
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
 
 public class AddNewRoute extends AppCompatActivity {
 
@@ -19,8 +23,9 @@ public class AddNewRoute extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_route);
-
-        final String[] stopData = this.getResources().getStringArray(R.array.stopName);
+        Intent intent = getIntent();
+        ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
+        final String[] stopData = stopNames.toArray(new String[stopNames.size()]);
         final String[] timeHours = getResources().getStringArray(R.array.timePoint_hour);
         final String[] timeMins = getResources().getStringArray(R.array.timePoint_min);
 
@@ -88,7 +93,28 @@ public class AddNewRoute extends AppCompatActivity {
             }
         });
 
-//        Button testButton = (Button) findViewById(R.id.test_button);
+        Button btn1 = (Button) findViewById(R.id.button1);
+        btn1.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v)  {
+//               File newFile = new File(AddNewRoute.this.getExternalFilesDir(null).getAbsolutePath());
+//               try {
+//                   FileWriter writer = new FileWriter(newFile, true);
+//                   BufferedWriter bfWriter = new BufferedWriter(writer);
+//                   bfWriter.write(myTime);
+//                   bfWriter.newLine();
+//                   bfWriter.write(myStart);
+//                   bfWriter.newLine();
+//                   bfWriter.write(myEnd);
+//                   bfWriter.newLine();
+//               }
+//               catch(Exception e){
+//
+//               }
+//               Intent myRoute = new Intent(AddNewRoute.this,MyRoute.class);
+//               startActivity(myRoute);
+           }
+         });
 //        testButton.setOnClickListener(new View.OnClickListener() {
 //            int hour = 8, minute = 0;
 //            @Override

@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent add_new_route = new Intent(MainActivity.this, AddNewRoute.class);
+                add_new_route.putExtra("stop_names",initializedStops);
                 startActivity(add_new_route);
             }
         });
