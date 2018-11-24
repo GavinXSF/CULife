@@ -14,6 +14,7 @@
         android:background="@android:color/transparent"
         android:drawableBottom="@drawable/bus"
         android:layout_toRightOf="@id/add_new_route"
+        android:layout_toEndOf="@+id/add_new_route"
         android:layout_above="@id/add_new_route"/>
     <Button
         android:id="@+id/add_new_route"
@@ -33,6 +34,7 @@
         android:background="@android:color/transparent"
         android:drawableBottom="@drawable/route"
         android:layout_above="@id/add_new_route"
-        android:layout_toLeftOf="@id/add_new_route"/>
+        android:layout_toLeftOf="@id/add_new_route"
+        android:layout_toStartOf="@id/add_new_route"/>
 
 </RelativeLayout>

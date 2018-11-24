@@ -14,12 +14,16 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity android:name=".StopInfo" />
         <activity android:name=".SelectStop" />
         <activity android:name=".AddNewRoute" />
-        <activity android:name=".MyRoute"></activity>
+        <activity android:name=".MyRoute">
+
+        </activity>
     </application>
 
 </manifest>
