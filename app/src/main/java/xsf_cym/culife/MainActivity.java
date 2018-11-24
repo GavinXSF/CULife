@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         }
         System.out.println( buses[0].passStops.get(3) );
         ArrayList<BusStop> stops = new ArrayList<BusStop>();
-        ArrayList<String> initializedStops = new ArrayList<String>();
+        final ArrayList<String> initializedStops = new ArrayList<String>();
         for(int i = 0; i < 12; i++){
             for(int j = 0; j < buses[i].passStops.size(); j++){
                 if(!initializedStops.contains(buses[i].passStops.get(j))){
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent select_stop = new Intent(MainActivity.this, SelectStop.class);
                 select_stop.putExtra("stops",stopsArray);
+                select_stop.putExtra("stop_names",initializedStops);
                 startActivity(select_stop);
             }
         });

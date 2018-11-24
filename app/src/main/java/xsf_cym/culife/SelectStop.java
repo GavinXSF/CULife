@@ -14,6 +14,7 @@ public class SelectStop extends AppCompatActivity {
     private Button btn;
     private int inputNum;
     private ArrayList<String> stopInfo;
+
     public SelectStop() {
     }
 
@@ -23,6 +24,7 @@ public class SelectStop extends AppCompatActivity {
         setContentView(R.layout.activity_select_stop);
         Intent intent = getIntent();
         final BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
+        final ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
         inputText = (EditText) findViewById(R.id.inputTime);
         btn = (Button) findViewById(R.id.btn1);
         btn.setOnClickListener(new View.OnClickListener() {
