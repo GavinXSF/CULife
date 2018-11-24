@@ -23,7 +23,7 @@ public class StopInfo extends AppCompatActivity {
         topBar.hide();
 
         TextView updateTopbar = findViewById(R.id.topbar_textview);
-        updateTopbar.setText("Stop Infomation");
+        updateTopbar.setText("Stop Information");
 
         Intent intent = getIntent();
         ArrayList<String> stopInfo = (ArrayList<String>)intent.getStringArrayListExtra("stops_info");
