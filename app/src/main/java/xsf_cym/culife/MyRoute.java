@@ -12,6 +12,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.TextView;
 
 public class MyRoute extends AppCompatActivity {
     private ArrayList<String> startTime = new ArrayList<String>();
@@ -100,5 +104,10 @@ public class MyRoute extends AppCompatActivity {
 
 
 
+        ActionBar topBar = getSupportActionBar();
+        topBar.hide();
+
+        TextView updateTopbar = findViewById(R.id.topbar_textview);
+        updateTopbar.setText("My Route");
     }
 }

@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".SelectStop">
 
+    <include layout="@layout/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        />
+
     <EditText
         android:id="@+id/inputTime"
         android:layout_width="wrap_content"
