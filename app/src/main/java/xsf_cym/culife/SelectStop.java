@@ -1,6 +1,7 @@
 package xsf_cym.culife;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,13 @@ public class SelectStop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_stop);
+        ActionBar topBar = getSupportActionBar();
+
+            topBar.hide();
+
+        TextView updateTopbar = findViewById(R.id.topbar_textview);
+        updateTopbar.setText("Select Stop");
+
         Intent intent = getIntent();
         final BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
         final ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");

@@ -2,6 +2,7 @@ package xsf_cym.culife;
 
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
@@ -25,6 +27,13 @@ public class AddNewRoute extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_route);
+
+        ActionBar topBar = getSupportActionBar();
+        topBar.hide();
+
+        TextView updateTopbar = findViewById(R.id.topbar_textview);
+        updateTopbar.setText("Add New Route");
+
         Intent intent = getIntent();
         ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
         final String[] stopData = stopNames.toArray(new String[stopNames.size()]);

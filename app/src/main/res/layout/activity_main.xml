@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <include layout="@layout/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        />
 
     <Button
         android:id="@+id/select_stop"
