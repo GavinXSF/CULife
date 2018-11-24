@@ -117,4 +117,14 @@ public class Bus{
         return true;
         
     }
+
+    public int estimateTime(String start, String end){
+        int startIndex = passStops.indexOf(start);
+        int endIndex = passStops.indexOf(end);
+        int sum = 0;
+        for(int i = startIndex; i < endIndex; i++){
+            sum += interval.get(i);
+        }
+        return sum;
+    }
 }
