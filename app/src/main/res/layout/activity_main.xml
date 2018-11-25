@@ -3,11 +3,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_background"
     >
-    <include layout="@layout/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        />
+    <!--<include layout="@layout/top_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="55dp"-->
+        <!--/>-->
 
     <Button
         android:id="@+id/select_stop"

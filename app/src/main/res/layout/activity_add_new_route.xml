@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/add_route_background">
 
     <include layout="@layout/top_bar"
         android:layout_width="match_parent"
@@ -56,7 +57,7 @@
         android:text="Start Stop"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/startpos_spinner"
-        android:textColor="#26c6da"/>
+        android:textColor="#716e77"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -66,7 +67,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/start_time_hours"
         android:layout_marginTop="25dp"
-        android:textColor="#009688"/>
+        android:textColor="#716e77"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -77,7 +78,7 @@
         android:layout_alignLeft="@id/start_time_hours"
         android:layout_above="@id/start_time_hours"
         android:layout_marginBottom="2dp"
-        android:textColor="#2196f3"/>
+        android:textColor="#716e77"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -88,7 +89,7 @@
         android:layout_alignStart="@id/start_time_minutes"
         android:layout_above="@id/start_time_minutes"
         android:layout_marginBottom="2dp"
-        android:textColor="#2196f3"/>
+        android:textColor="#716e77"/>
 
     <Button
         android:id="@+id/button1"
@@ -97,7 +98,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="69dp"
-        android:text="Button" />
+        android:textColor="#716e77"
+        android:background="@android:color/transparent"
+        android:text="Confirm" />
 
 
 </RelativeLayout>

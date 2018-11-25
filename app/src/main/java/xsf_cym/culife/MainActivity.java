@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActionBar topBar = getSupportActionBar();
-        topBar.hide();
+//        ActionBar topBar = getSupportActionBar();
+//        topBar.setBackgroundDrawable(getDrawable(R.i));
 
 
         Button SelectStop = findViewById(R.id.select_stop);
