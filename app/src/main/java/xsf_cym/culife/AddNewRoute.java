@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -115,6 +116,7 @@ public class AddNewRoute extends AppCompatActivity {
            public void onClick(View v)  {
 
                File newFile = new File(AddNewRoute.this.getFilesDir().getAbsolutePath(), "my_route.txt");
+             //  Log.d("Tsai", startTime);
                try {
                    FileWriter writer = new FileWriter(newFile, true);
                    BufferedWriter bfWriter = new BufferedWriter(writer);
@@ -124,14 +126,19 @@ public class AddNewRoute extends AppCompatActivity {
                    bfWriter.newLine();
                    bfWriter.write(endStop);
                    bfWriter.newLine();
+                   bfWriter.flush();
+                   writer.close();
+                   bfWriter.close();
                } catch (Exception e) {
-
+                   Log.e("Tsai", "not writing" );
                }
+
 
                Intent myRoute = new Intent(AddNewRoute.this,MyRoute.class);
                myRoute.putExtra("stops",stopsArray);
                myRoute.putExtra("buses",buses);
                myRoute.putExtra("stop_names",stopNames);
+
                startActivity(myRoute);
            }
          });

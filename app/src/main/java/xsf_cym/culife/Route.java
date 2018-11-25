@@ -1,5 +1,7 @@
 package xsf_cym.culife;
 
+import android.util.Log;
+
 public class Route{
     int startTime;
     String startPosition;
@@ -18,16 +20,23 @@ public class Route{
         endStopLines = new boolean[12];
         results = new boolean[12];
         for(BusStop elements:stops){   //search for the starting stop
-            if(elements.stopName==startPosition)
+            if(elements.stopName.equals(startPosition)){
                 startStopLines = elements.passLines;
+              //  Log.d("Tsai", " " + startStopLines[2]);
+                break;
+            }
         }
         
         for(BusStop elements:stops){   //search for the destination
-            if(elements.stopName==destination)
+            if(elements.stopName.equals(destination)){
                 endStopLines = elements.passLines;
+
+                break;
+            }
         }
         for(int i = 0; i < 12; i++){
             results[i] = startStopLines[i] & endStopLines[i];
+          //  Log.d("Tsai", "computeLine: "+ i + " " + results[i]);
         }
         for(int i=0;i<12;i++){
             if (results[i]){
