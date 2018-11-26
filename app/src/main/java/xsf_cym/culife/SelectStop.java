@@ -39,7 +39,7 @@ public class SelectStop extends AppCompatActivity {
         Intent intent = getIntent();
         final BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
         final ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
-        String[] stopNamesArray = stopNames.toArray(new String[stopNames.size()]);
+        final String[] stopNamesArray = stopNames.toArray(new String[stopNames.size()]);
 //        Log.d("Tsai",stopNamesArray[3]);
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(SelectStop.this,R.layout.support_simple_spinner_dropdown_item,stopNamesArray);
         mySpinner = (Spinner) findViewById(R.id.stopsSpinner);
@@ -65,6 +65,7 @@ public class SelectStop extends AppCompatActivity {
                 inputNum = Integer.parseInt(temp);
                 if(selectedStop > -1) {
                     stopInfo = stopsArray[selectedStop].waitingTime(inputNum);
+                    stopInfo.add(0,stopNamesArray[selectedStop]);
                     Intent stop_info = new Intent(SelectStop.this, StopInfo.class);
                     stop_info.putExtra("stops_info", stopInfo);
                     startActivity(stop_info);
