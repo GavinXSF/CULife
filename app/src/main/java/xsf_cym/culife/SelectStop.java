@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class SelectStop extends AppCompatActivity {
     private Spinner mySpinner;
@@ -56,6 +57,10 @@ public class SelectStop extends AppCompatActivity {
             }
         });
         inputText = (EditText) findViewById(R.id.inputTime);
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        inputText.setText((hour*100+minutes)+"");
         btn = (Button) findViewById(R.id.btn1);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
