@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,8 +59,8 @@ public class SelectStop extends AppCompatActivity {
         });
         inputText = (EditText) findViewById(R.id.inputTime);
         Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutes = calendar.get(Calendar.MINUTE);
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int minutes = calendar.get(Calendar.MINUTE);
         inputText.setText((hour*100+minutes)+"");
         btn = (Button) findViewById(R.id.btn1);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -68,12 +69,18 @@ public class SelectStop extends AppCompatActivity {
                 String temp;
                 temp = inputText.getText().toString();
                 inputNum = Integer.parseInt(temp);
-                if(selectedStop > -1) {
-                    stopInfo = stopsArray[selectedStop].waitingTime(inputNum);
-                    stopInfo.add(0,stopNamesArray[selectedStop]);
-                    Intent stop_info = new Intent(SelectStop.this, StopInfo.class);
-                    stop_info.putExtra("stops_info", stopInfo);
-                    startActivity(stop_info);
+                if((inputNum%100)>59 || (inputNum/100 > 24)){
+                    Toast.makeText(SelectStop.this, "Wrong input", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (selectedStop > -1) {
+                        stopInfo = stopsArray[selectedStop].waitingTime(inputNum);
+                        stopInfo.add(0, stopNamesArray[selectedStop]);
+                        stopInfo.add(1, hour + ":" + minutes);
+                        Intent stop_info = new Intent(SelectStop.this, StopInfo.class);
+                        stop_info.putExtra("stops_info", stopInfo);
+                        startActivity(stop_info);
+                    }
                 }
             }
         });
