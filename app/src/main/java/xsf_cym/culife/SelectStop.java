@@ -70,7 +70,7 @@ public class SelectStop extends AppCompatActivity {
                 temp = inputText.getText().toString();
                 inputNum = Integer.parseInt(temp);
                 if((inputNum%100)>59 || (inputNum/100 > 24)){
-                    Toast.makeText(SelectStop.this, "Wrong input", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SelectStop.this, "Wrong input\nInput format:HHmm", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     if (selectedStop > -1) {

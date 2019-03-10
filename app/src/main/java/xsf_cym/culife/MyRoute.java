@@ -86,7 +86,7 @@ public class MyRoute extends AppCompatActivity {
                 routes[i].computeLine(stopsArray,buses);
                 firstHalf = stopsArray[stopNames.indexOf(routes[i].startPosition)].waitingTime(routes[i].startTime, routes[i].validBus);
            //     Log.d("Tsai", stopsArray[stopNames.indexOf(routes[i].destination)].stopName +" "+routes[i].startPosition+" "+routes[i].destination+"  "+routes[i].validBus[0]+" "+routes[i].validBus[1]+" "+routes[i].validBus[2]);
-                displayInfo.add("Route"+(i+1)+ "\n" + routes[i].startPosition + " → " + routes[i].destination);
+                displayInfo.add("Route"+(i+1)+ "\n" + routes[i].startPosition + " → " + routes[i].destination + "\n" + routes[i].startTime/100 + ":" + routes[i].startTime%100);
                 int index = 0;
 
                 for(int j = 0; j < firstHalf.size(); j++){
