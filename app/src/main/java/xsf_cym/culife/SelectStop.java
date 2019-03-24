@@ -76,7 +76,11 @@ public class SelectStop extends AppCompatActivity {
                     if (selectedStop > -1) {
                         stopInfo = stopsArray[selectedStop].waitingTime(inputNum);
                         stopInfo.add(0, stopNamesArray[selectedStop]);
-                        stopInfo.add(1, hour + ":" + minutes);
+                        if((inputNum%100)<10)
+                            stopInfo.add(1, inputNum/100 + ":0" + inputNum%100);
+                        else
+                            stopInfo.add(1, inputNum/100 + ":" + inputNum%100);
+//                        stopInfo.add(1,"Lat:"+stopsArray[selectedStop].Latitude);
                         Intent stop_info = new Intent(SelectStop.this, StopInfo.class);
                         stop_info.putExtra("stops_info", stopInfo);
                         startActivity(stop_info);

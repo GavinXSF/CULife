@@ -10,6 +10,8 @@ public class BusStop implements Serializable {
     int[][] standardTime = new int[12][];
     int[] sizeOfPeriod = new int[12];
     ArrayList<String> lineNum = new ArrayList<>();
+    Double Longitude;
+    Double Latitude;
 
 
     public BusStop(String name, Bus[] buses){
@@ -40,6 +42,10 @@ public class BusStop implements Serializable {
             
             }
         }
+    }
+    public void setLocation(Double Lat, Double Lng){
+        Latitude = Lat;
+        Longitude = Lng;
     }
     public ArrayList<String> waitingTime(int startTime){
         ArrayList<String> displayInfo = new ArrayList<String>();

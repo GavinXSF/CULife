@@ -1,0 +1,74 @@
+﻿{
+    "stops": [
+        {
+            "name": "Yasumoto International Academic Park",
+            "longitude": "114.210902",
+            "latitude": "22.415884"
+        },
+        {
+            "name": "University Sports Centre",
+            "longitude": "114.210437",
+            "latitude": "22.417820"
+        },
+        {
+            "name": "Science Centre",
+            "longitude": "114.206922",
+            "latitude": "22.419823"
+        },
+        {
+            "name": "Fung King-hey Building",
+            "longitude": "114.202983",
+            "latitude": "22.419874"
+        },
+        {
+            "name": "Residences 3 & 4",
+            "longitude": "114.203439",
+            "latitude": "22.421435"
+        },
+        {
+            "name": "Shaw College",
+            "longitude": "114.203439",
+            "latitude": "22.421435"
+        },
+        {
+            "name": "C.W. Chu College(down)",
+            "longitude": "tbf",
+            "latitude": "tbf"
+        },
+        {
+            "name": "Residence 15",
+            "longitude": "114.206608",
+            "latitude": "22.423726"
+        },
+        {
+            "name": "United College Staff Residence",
+            "longitude": "114.205148",
+            "latitude": "22.423241"
+        },
+        {
+            "name": "Chan Chun Ha Hostel",
+            "longitude": "114.204639",
+            "latitude": "22.421820"
+        },
+        {
+            "name": "Residences 3 & 4(to Central Campus)",
+            "longitude": "114.203493",
+            "latitude": "22.420871"
+        },
+        {
+            "name": "University Administration Building",
+            "longitude": "114.205325",
+            "latitude": "22.418799"
+        },
+        {
+            "name": "S.H. Ho College",
+            "longitude": "114.209893",
+            "latitude": "22.418001"
+        },
+        {
+            "name": "University MTR Station Piazza",
+            "longitude": "114.209881",
+            "latitude": "22.414026"
+        }
+    ]
+}
