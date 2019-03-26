@@ -38,14 +38,32 @@ public class SelectStop extends AppCompatActivity {
         TextView updateTopbar = findViewById(R.id.topbar_textview);
         updateTopbar.setText("Select Stop");
 
+
+
         Intent intent = getIntent();
         final BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
         final ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
         final String[] stopNamesArray = stopNames.toArray(new String[stopNames.size()]);
 //        Log.d("Tsai",stopNamesArray[3]);
+
+
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(SelectStop.this,R.layout.support_simple_spinner_dropdown_item,stopNamesArray);
         mySpinner = (Spinner) findViewById(R.id.stopsSpinner);
         mySpinner.setAdapter(spinnerAdapter);
+        //choose the nearest one by default
+        double min = 999;
+        int nearest=-1;
+        for (int i = 0; i < stopsArray.length;i++){
+            if((stopsArray[i].Latitude!=null)&&(stopsArray[i].Longitude!=null)){
+                double distanceSquare = (stopsArray[i].Latitude-userLatitude)*(stopsArray[i].Latitude-userLatitude)
+                        +(stopsArray[i].Longitude-userLongitude)*(stopsArray[i].Longitude-userLongitude);
+                if(distanceSquare<min){
+                    min = distanceSquare;
+                    nearest = i;
+                }
+            }
+        }
+        mySpinner.setSelection(nearest);
         mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
