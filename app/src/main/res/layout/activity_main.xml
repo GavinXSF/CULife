@@ -42,4 +42,13 @@
         android:layout_toLeftOf="@id/add_new_route"
         android:layout_toStartOf="@id/add_new_route"/>
 
+    <Button
+        android:id="@+id/temp_button"
+        android:text="button_to_map"
+        android:layout_below="@id/add_new_route"
+        android:layout_toStartOf="@id/add_new_route"
+        android:layout_toLeftOf="@id/add_new_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

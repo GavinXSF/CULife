@@ -171,9 +171,12 @@ public class Bus implements Serializable {
     }
     
     /* may add some checking on date*/
-    public boolean checkInService(int departureTime){ // check if the bus is in service at that time, return true or false accordingly
+    public boolean checkInService(int departureTime, int currentDate){ // check if the bus is in service at that time, return true or false accordingly
         if(departureTime<startTime || departureTime>endTime)
             return false;
+        else if(!validDate[currentDate])   // check whether bus is available that day
+            return false;
+
         return true;
         
     }

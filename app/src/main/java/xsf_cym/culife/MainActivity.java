@@ -25,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> stopInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //the following checks user permissions and asks to request those permissions
+
+
+
+
 
         Bus[] buses = new Bus[12];
         String[] lineNum = {"1A","2","3","4","5","6A","7","8","N","H","6B","1B"};
@@ -108,6 +113,16 @@ public class MainActivity extends AppCompatActivity {
         Button SelectStop = findViewById(R.id.select_stop);
         Button AddNewRoute = findViewById(R.id.add_new_route);
         Button MyRoute = findViewById(R.id.my_route);
+        Button TempButton = findViewById(R.id.temp_button);
+
+        TempButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent temp_intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(temp_intent);
+            }
+
+        });
 
         SelectStop.setOnClickListener(new View.OnClickListener() {
             @Override
