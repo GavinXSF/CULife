@@ -36,9 +36,7 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-        //启动服务
-        Intent serviceIntent = new Intent(MainActivity.this, GpsService.class);
-        startService(serviceIntent);
+
 
 
 
@@ -112,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //stopsArray[3].waitingTime(1313);
-
+        //启动服务
+        Intent serviceIntent = new Intent(MainActivity.this, GpsService.class);
+        serviceIntent.putExtra("stops",stopsArray);
+        startService(serviceIntent);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
