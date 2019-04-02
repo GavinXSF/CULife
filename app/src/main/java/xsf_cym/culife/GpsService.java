@@ -47,6 +47,7 @@ public class GpsService extends IntentService {
     @Override
     public void onHandleIntent(Intent intent){
         BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
+        Bus[] buses = (Bus[]) intent.getSerializableExtra("buses");
         final Object[] objs = new Object[1];
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED ) {
@@ -69,7 +70,7 @@ public class GpsService extends IntentService {
             // 得到location object
             location = locationManager.getLastKnownLocation(locationProvider);
             //监视地理位置变化
-            locationManager.requestLocationUpdates(locationProvider, 2000, 10, locationListener);
+            locationManager.requestLocationUpdates(locationProvider, 2000, 15, locationListener);
             latitude = location.getLatitude();
             longitude = location.getLongitude();
 
@@ -105,15 +106,19 @@ public class GpsService extends IntentService {
                         objs[0]=calculatedSpeed;
                 }};
             int count = 0;
-            int stopIndex;
+            int stopIndex = -1;
             boolean atBusstop = false;
             while(true){  //firstly, check if the user is at one of the bus stop
                 for(int i = 0; i <stopsArray.length;i++ ){
                     if(stopsArray[i].Longitude!=null){
-                        double deltaLng = location.getLongitude()-stopsArray[i].Longitude;
-                        double deltaLat = location.getLatitude()-stopsArray[i].Latitude;
-                        double distance = Math.sqrt(deltaLat*deltaLat + deltaLng*deltaLng);
-                        if(distance<threshold){
+//                        double deltaLng = location.getLongitude()-stopsArray[i].Longitude;
+//                        double deltaLat = location.getLatitude()-stopsArray[i].Latitude;
+//                        double distance = Math.sqrt(deltaLat*deltaLat + deltaLng*deltaLng);
+                        Location stopLocation = new Location("");
+                        stopLocation.setLatitude(stopsArray[i].Latitude);
+                        stopLocation.setLongitude(stopsArray[i].Longitude);
+                        double distance = location.distanceTo(stopLocation);
+                        if(distance<10.0){
                             stopIndex = i;
                             atBusstop = true;
                             break;
@@ -134,14 +139,32 @@ public class GpsService extends IntentService {
                     stopSelf();
             }
             //second whilt loop: find out when the user get on the bus
+            count = 0;
             while (true){
                 long getOnTime = 0;
-                if(objs[0]>threshold_for_bus_speed){
-                    //possible problem: if a user pass by a bus stop and get on a bus at another stop
-                    // check location again?
-                    getOnTime = location.getTime();
-                    //TO DO: Check the time stores in stops[stopIndex] and the database, find out the possible buses
-                    break;
+                double userSpeed = (double)objs[0];
+                if(userSpeed>4){
+
+                    //possible problem: if a user pass by a bus stop and take other forms of transportation
+                    // check location again
+                    if(stopIndex!=-1) {
+                        Location stopLocation = new Location("");
+
+                        stopLocation.setLatitude(stopsArray[stopIndex].Latitude);
+                        stopLocation.setLongitude(stopsArray[stopIndex].Longitude);
+                        double distance = location.distanceTo(stopLocation);
+                        if(distance<30) {       //if the user get on the bus at that stop
+                            getOnTime = location.getTime();//milliseconds since epoch
+
+                            //TO DO: Check the time stores in stops[stopIndex] and the database, find out the possible buses
+
+                            break;
+                        }
+                        else
+                            stopSelf();  //if the user start moving in a high speed at somewhere else, stop tracking their gps
+                    }
+                    else
+                        stopSelf();
                 }
                 count++;
                 if(count>120)  // if the user doesn't get on the bus in 10 mins, stop tracking their gps
@@ -155,23 +178,30 @@ public class GpsService extends IntentService {
             }
             //third while loop: find out which bus the user take, and use their gps info to update bus info in our database
             count = 0;
+            String lastStop = stopsArray[stopIndex].stopName;
             while(true){
-                if(objs[0]<a_small_value){
+                double userSpeed = (double)objs[0];
+                int the_index = -1;
+                if(userSpeed<1){
                     int currentStop = -1;
                     if(length_of_possible_buses_list>1){
                         //compare current location with all stops, if not at a stop, sleep and continue
                         for(int i = 0; i <stopsArray.length;i++ ){
                             if(stopsArray[i].Longitude!=null){
-                                double deltaLng = location.getLongitude()-stopsArray[i].Longitude;
-                                double deltaLat = location.getLatitude()-stopsArray[i].Latitude;
-                                double distance = Math.sqrt(deltaLat*deltaLat + deltaLng*deltaLng);
-                                if(distance<threshold){
+//                                double deltaLng = location.getLongitude()-stopsArray[i].Longitude;
+//                                double deltaLat = location.getLatitude()-stopsArray[i].Latitude;
+//                                double distance = Math.sqrt(deltaLat*deltaLat + deltaLng*deltaLng);
+                                Location stopLocation = new Location("");
+                                stopLocation.setLatitude(stopsArray[i].Latitude);
+                                stopLocation.setLongitude(stopsArray[i].Longitude);
+                                double distance = location.distanceTo(stopLocation);
+                                if(distance<10.0){
                                     currentStop = i;
                                     break;
                                 }
                             }
                         }
-                        if(currentStop == -1){
+                        if(currentStop == -1){   //if the user stop at somewhere other than a bus stop
                             try{
                                 Thread.sleep(5000);}              //do the checking once every 5 seconds
                             catch (InterruptedException e){
@@ -185,17 +215,40 @@ public class GpsService extends IntentService {
                             //if they don't match, delete this bus from the list(and i--?)
                         }
                         if(length_of_possible_buses_list == 1){
+                            the_index = buses[index_of_this_bus].passStops.indexOf(stopsArray[currentStop].stopName);
                             //write to mysql
+
                             continue;
+                        }
+                        //if there are still more than 1 possible buslines
+                        else if (length_of_possible_buses_list > 1){
+                            lastStop = stopsArray[currentStop].stopName;
                         }
                     }
                     if(length_of_possible_buses_list == 1){
-                        //find the index of the next stop of this bus
-                        double deltaLng = location.getLongitude()-stopsArray[the_index].Longitude;
-                        double deltaLat = location.getLatitude()-stopsArray[the_index].Latitude;
-                        double distance = Math.sqrt(deltaLat*deltaLat + deltaLng*deltaLng);
-                        if(distance<threshold){
+
+
+//                        double deltaLng = location.getLongitude()-stopsArray[the_index].Longitude;
+//                        double deltaLat = location.getLatitude()-stopsArray[the_index].Latitude;
+//                        double distance = Math.sqrt(deltaLat*deltaLat + deltaLng*deltaLng);
+
+                        // check if the bus still stop at the same stop
+                        Location stopLocation = new Location("");
+                        stopLocation.setLatitude(stopsArray[the_index].Latitude);
+                        stopLocation.setLongitude(stopsArray[the_index].Longitude);
+                        double distance = location.distanceTo(stopLocation);
+                        if(distance<20.0) {
                             //write to mysql
+                            count = 0; //if the user stop at a bus stop, clear the count value
+                            continue;
+                        }
+                        //if not, check if it arrives at another stpo
+                        stopLocation.setLatitude(stopsArray[the_index+1].Latitude);
+                        stopLocation.setLongitude(stopsArray[the_index+1].Longitude);
+                        distance = location.distanceTo(stopLocation);
+                        if(distance<20.0){
+                            //write to mysql
+                            the_index++;
                             count = 0;      //if the user stop at a bus stop, clear the count value
                             continue;
                         }
@@ -213,7 +266,7 @@ public class GpsService extends IntentService {
                     }
                 }
 
-                else if(objs[0]>threshold_for_bus_speed) {
+                else if(userSpeed>4) {
                     count = 0;  // if user move at the speed of car, clear
                 }
                 else {
@@ -222,7 +275,7 @@ public class GpsService extends IntentService {
                 if(count>30){
                     stopSelf();
                 }
-                
+
                 try{
                     Thread.sleep(5000);}              //do the checking once every 5 seconds
                 catch (InterruptedException e){
