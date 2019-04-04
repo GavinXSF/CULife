@@ -12,6 +12,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -84,7 +88,24 @@ public class MyRoute extends AppCompatActivity {
                 routes[i] = new Route(Integer.parseInt((String)startTime.get(i)),
                         (String)startStop.get(i),(String)endStop.get(i));
                 routes[i].computeLine(stopsArray,buses);
-                firstHalf = stopsArray[stopNames.indexOf(routes[i].startPosition)].waitingTime(routes[i].startTime, routes[i].validBus);
+                HashMap<String,Double> waitingTimes = new HashMap<String, Double>();
+                waitingTimes = stopsArray[stopNames.indexOf(routes[i].startPosition)].waitingTime(routes[i].startTime, routes[i].validBus);
+                Set<String> keys=waitingTimes.keySet();
+                Iterator<String> iterator1=keys.iterator();
+                while (iterator1.hasNext()){
+                    String busNum = iterator1.next();
+                    double bestTime;
+                    double timeFromDB = -1.0;
+                    //todo: search for info in mysql
+
+                    if(timeFromDB==-1.0)
+                        bestTime = waitingTimes.get(busNum);
+                    else
+                        bestTime = timeFromDB;
+
+                    firstHalf.add("Line "+ busNum + ": " + bestTime + " mins\nEstimated travel time: " );
+                }
+
            //     Log.d("Tsai", stopsArray[stopNames.indexOf(routes[i].destination)].stopName +" "+routes[i].startPosition+" "+routes[i].destination+"  "+routes[i].validBus[0]+" "+routes[i].validBus[1]+" "+routes[i].validBus[2]);
                 displayInfo.add("Route"+(i+1)+ "\n" + routes[i].startPosition + " → " + routes[i].destination + "\n" + routes[i].startTime/100 + ":" + routes[i].startTime%100);
                 int index = 0;

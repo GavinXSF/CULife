@@ -16,12 +16,17 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class SelectStop extends AppCompatActivity {
     private Spinner mySpinner;
     private EditText inputText;
     private Button btn;
     private int inputNum;
+    private HashMap<String, Double> waitingTimes;
     private ArrayList<String> stopInfo;
     private int selectedStop = -1;
     public SelectStop() {
@@ -92,7 +97,23 @@ public class SelectStop extends AppCompatActivity {
                 }
                 else {
                     if (selectedStop > -1) {
-                        stopInfo = stopsArray[selectedStop].waitingTime(inputNum);
+                        waitingTimes = stopsArray[selectedStop].waitingTime(inputNum);
+                        Set<String> keys=waitingTimes.keySet();
+                        Iterator<String> iterator1=keys.iterator();
+                        while (iterator1.hasNext()){
+                            String busNum = iterator1.next();
+                            double bestTime;
+                            double timeFromDB = -1.0;
+                            //todo: search for info in mysql; timeFromDB = currentTime - (found time + interval) (if valid time was found)
+
+                            if(timeFromDB==-1.0)
+                                bestTime = waitingTimes.get(busNum);
+                            else
+                                bestTime = timeFromDB;
+
+                            stopInfo.add("Line "+ busNum + ": " + bestTime + " mins\n" );
+                        }
+
                         stopInfo.add(0, stopNamesArray[selectedStop]);
                         if((inputNum%100)<10)
                             stopInfo.add(1, inputNum/100 + ":0" + inputNum%100);

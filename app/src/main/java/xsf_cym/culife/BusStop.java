@@ -2,12 +2,13 @@ package xsf_cym.culife;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BusStop implements Serializable {
 
     boolean[] passLines=new boolean[12];
     String stopName;
-    int[][] standardTime = new int[12][];
+    double[][] standardTime = new double[12][];
     int[] sizeOfPeriod = new int[12];
     ArrayList<String> lineNum = new ArrayList<>();
     Double Longitude;
@@ -25,14 +26,14 @@ public class BusStop implements Serializable {
         for(int i = 0; i < 12; i++){  
             if(passLines[i]){
                 lineNum.add(buses[i].busNum);
-                int sumOfTime = 0;
+                double sumOfTime = 0;
                 for(int j = 0; j < buses[i].passStops.indexOf(stopName); j++){
                     sumOfTime += buses[i].interval.get(j);
                 }
                 sizeOfPeriod[i] = buses[i].timePeriod.size();
-                standardTime[i] = new int[sizeOfPeriod[i]];
+                standardTime[i] = new double[sizeOfPeriod[i]];
                 for(int j = 0; j < sizeOfPeriod[i]; j++){
-                    int result = 0;
+                    double result = 0;
                     result = buses[i].timePeriod.get(j) + sumOfTime;
                     if(result > 60)
                         result = result % 60;
@@ -47,14 +48,15 @@ public class BusStop implements Serializable {
         Latitude = Lat;
         Longitude = Lng;
     }
-    public ArrayList<String> waitingTime(int startTime){
-        ArrayList<String> displayInfo = new ArrayList<String>();
+    public HashMap<String , Double> waitingTime(int startTime){
+//        ArrayList<String> displayInfo = new ArrayList<String>();
+        HashMap<String , Double> hashmap = new HashMap<String, Double>();
         int index = 0;
         for(int i = 0; i < 12; i++){
             if(passLines[i]){
-                int nearestTime = 60;
+                double nearestTime = 60.0;
                 for(int j = 0; j < sizeOfPeriod[i]; j++){
-                    int wait = 0;
+                    double wait;
                     if((startTime % 100) > standardTime[i][j])
                         wait = standardTime[i][j] + 60 - (startTime % 100);
                     else
@@ -62,21 +64,23 @@ public class BusStop implements Serializable {
                     if(wait < nearestTime)
                         nearestTime = wait;
                 }
-                displayInfo.add("Line "+ lineNum.get(index) + ": " + nearestTime + " mins\n" );
+                hashmap.put(lineNum.get(index),nearestTime);
+//                displayInfo.add("Line "+ lineNum.get(index) + ": " + nearestTime + " mins\n" );
                 index++;
 
             }
         }
-        return(displayInfo);
+        return(hashmap);
     }
-    public ArrayList<String> waitingTime(int startTime, boolean[] filters){
-        ArrayList<String> displayInfo = new ArrayList<String>();
+    public HashMap<String , Double> waitingTime(int startTime, boolean[] filters){
+//        ArrayList<String> displayInfo = new ArrayList<String>();
+        HashMap<String , Double> hashmap = new HashMap<String, Double>();
         int index = 0;
         for(int i = 0; i < 12; i++){
             if(passLines[i]){
-                int nearestTime = 60;
+                double nearestTime = 60.0;
                 for(int j = 0; j < sizeOfPeriod[i]; j++){
-                    int wait = 0;
+                    double wait = 0;
                     if((startTime % 100) > standardTime[i][j])
                         wait = standardTime[i][j] + 60 - (startTime % 100);
                     else
@@ -85,11 +89,13 @@ public class BusStop implements Serializable {
                         nearestTime = wait;
                 }
                 if(filters[i])
-                    displayInfo.add("Line "+ lineNum.get(index) + ": " + nearestTime + " mins\nEstimated travel time: " );
+                    hashmap.put(lineNum.get(index),nearestTime);
+//                    displayInfo.add("Line "+ lineNum.get(index) + ": " + nearestTime + " mins\nEstimated travel time: " );
+
                 index++;
 
             }
         }
-        return(displayInfo);
+        return(hashmap);
     }
 }

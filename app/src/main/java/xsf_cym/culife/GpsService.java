@@ -11,11 +11,20 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TimeZone;
 
 public class GpsService extends IntentService {
     private LatLng mLatLng;
@@ -48,6 +57,7 @@ public class GpsService extends IntentService {
     public void onHandleIntent(Intent intent){
         BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
         Bus[] buses = (Bus[]) intent.getSerializableExtra("buses");
+        ArrayList<String> possibleBuses = new ArrayList<String>();
         final Object[] objs = new Object[1];
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED ) {
@@ -155,9 +165,37 @@ public class GpsService extends IntentService {
                         double distance = location.distanceTo(stopLocation);
                         if(distance<30) {       //if the user get on the bus at that stop
                             getOnTime = location.getTime();//milliseconds since epoch
+                            Date date = new Date(getOnTime);
+                            DateFormat formatter = new SimpleDateFormat("HHmm");
+                            formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+                            String dateFormatted = formatter.format(date);
+                            int time;
+                            try {
+                                time = Integer.parseInt(dateFormatted);
+                            }
+                            catch (NumberFormatException e)
+                            {
+                                time = -1;
+                                Log.d("Tsai", "wrong date format");
+                            }
+                            HashMap<String, Double> waitingTimes = stopsArray[stopIndex].waitingTime(time);
+                            //todo: Check the time stores in stops[stopIndex] and the database, find out the possible buses
+                            Set<String> keys=waitingTimes.keySet();
+                            Iterator<String> iterator1=keys.iterator();
+                            while (iterator1.hasNext()){
+                                boolean flag = false;
+                                String busNum = iterator1.next();
+                                double bestTime;
+                                double timeFromDB = -1.0;
+                                //todo: search for info in mysql; check if either timeFromDB+intervals<current time<that+errors or -yy<waitingTime<xx
 
-                            //TO DO: Check the time stores in stops[stopIndex] and the database, find out the possible buses
+                                if((timeFromDB==-1.0)||flag==false)
+//                                    check by waiting time
 
+                                if(flag)
+                                    possibleBuses.add(busNum);
+
+                            }
                             break;
                         }
                         else
@@ -184,7 +222,7 @@ public class GpsService extends IntentService {
                 int the_index = -1;
                 if(userSpeed<1){
                     int currentStop = -1;
-                    if(length_of_possible_buses_list>1){
+                    if(possibleBuses.size()>1){
                         //compare current location with all stops, if not at a stop, sleep and continue
                         for(int i = 0; i <stopsArray.length;i++ ){
                             if(stopsArray[i].Longitude!=null){
@@ -210,22 +248,22 @@ public class GpsService extends IntentService {
                             count++;
                             continue;
                         }
-                        for(int i = 0;i<length_of_possible_buses_list;i++){
+                        for(int i = 0;i<possibleBuses.size();i++){
                             //compare stops[i].stopName with next stop of the possible buses
                             //if they don't match, delete this bus from the list(and i--?)
                         }
-                        if(length_of_possible_buses_list == 1){
+                        if(possibleBuses.size() == 1){
                             the_index = buses[index_of_this_bus].passStops.indexOf(stopsArray[currentStop].stopName);
                             //write to mysql
 
                             continue;
                         }
                         //if there are still more than 1 possible buslines
-                        else if (length_of_possible_buses_list > 1){
+                        else if (possibleBuses.size() > 1){
                             lastStop = stopsArray[currentStop].stopName;
                         }
                     }
-                    if(length_of_possible_buses_list == 1){
+                    if(possibleBuses.size() == 1){
 
 
 //                        double deltaLng = location.getLongitude()-stopsArray[the_index].Longitude;
@@ -261,7 +299,7 @@ public class GpsService extends IntentService {
                         }
 
                     }
-                    if(length_of_possible_buses_list==0){
+                    if(possibleBuses.size()==0){
                         stopSelf();
                     }
                 }
