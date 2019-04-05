@@ -25,6 +25,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TimeZone;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class GpsService extends IntentService {
     private LatLng mLatLng;
@@ -118,6 +123,20 @@ public class GpsService extends IntentService {
             int count = 0;
             int stopIndex = -1;
             boolean atBusstop = false;
+            HashMap<String,Integer> busIndex = new HashMap<String, Integer>();
+
+            busIndex.put("1A",0);
+            busIndex.put("2",1);
+            busIndex.put("3",2);
+            busIndex.put("4",3);
+            busIndex.put("5",4);
+            busIndex.put("6A",5);
+            busIndex.put("7",6);
+            busIndex.put("8",7);
+            busIndex.put("N",8);
+            busIndex.put("H",9);
+            busIndex.put("6B",10);
+            busIndex.put("1B",11);
             while(true){  //firstly, check if the user is at one of the bus stop
                 for(int i = 0; i <stopsArray.length;i++ ){
                     if(stopsArray[i].Longitude!=null){
@@ -185,13 +204,55 @@ public class GpsService extends IntentService {
                             while (iterator1.hasNext()){
                                 boolean flag = false;
                                 String busNum = iterator1.next();
-                                double bestTime;
-                                double timeFromDB = -1.0;
+                                long timeFromDB = -1;
+                                int stopIndexOfData = -1;
                                 //todo: search for info in mysql; check if either timeFromDB+intervals<current time<that+errors or -yy<waitingTime<xx
+                                Connection connection = null;
+                                try {
+                                    Class.forName("com.mysql.jdbc.Driver");
+                                    String jdbcUrl = String.format(
+                                            "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                                                    + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                                            "culife",
+                                            "weighty-casing-235811:asia-east2:myinstance");
 
-                                if((timeFromDB==-1.0)||flag==false)
+                                    connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+                                } catch (SQLException ex) {
+                                    ex.printStackTrace();
+                                } catch (ClassNotFoundException ex) {
+                                    ex.printStackTrace();
+                                }
+                                try{
+                                    Statement st = connection.createStatement();
+                                    String sql = "SELECT * FROM busInfo WHERE busNum='"+busNum+"' and stopIndex between "+
+                                            (buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[stopIndex].stopName)-3) +" and "+
+                                            (buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[stopIndex].stopName)-1)+
+                                            "ORDER BY id DESC LIMIT 1";
+                                    ResultSet rs = st.executeQuery(sql);
+                                    rs.next();
+                                    timeFromDB = rs.getLong("time");
+                                    stopIndexOfData = rs.getInt("stopIndex");
+                                    connection.close();
+                                }
+                                catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                                if((timeFromDB == -1) || (stopIndexOfData == -1)){
+                                    Log.d("TSAI", "onHandleIntent: can't fetch data from db");
+                                }
+                                else{
+                                    int errorForEachStop = 60; //seconds
+                                    int travelTime = (int)(buses[busIndex.get(busNum)].estimateTime(buses[busIndex.get(busNum)].passStops.get(stopIndexOfData),stopsArray[stopIndex].stopName)*60);
+                                    long errorTotal = (getOnTime-timeFromDB)/1000 - travelTime;
+                                    int numOfStops = buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[stopIndex].stopName) - stopIndexOfData;
+                                    if((errorTotal<errorForEachStop*numOfStops)&&(errorTotal>-60))
+                                        flag = true;
+                                }
+                                if(flag==false) {
 //                                    check by waiting time
-
+                                    if(((20-waitingTimes.get(busNum))<buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[stopIndex].stopName)*60)&&((20-waitingTimes.get(busNum))>-60))
+                                        flag = true;
+                                }
                                 if(flag)
                                     possibleBuses.add(busNum);
 
@@ -217,6 +278,7 @@ public class GpsService extends IntentService {
             //third while loop: find out which bus the user take, and use their gps info to update bus info in our database
             count = 0;
             String lastStop = stopsArray[stopIndex].stopName;
+
             while(true){
                 double userSpeed = (double)objs[0];
                 int the_index = -1;
@@ -248,14 +310,47 @@ public class GpsService extends IntentService {
                             count++;
                             continue;
                         }
+
                         for(int i = 0;i<possibleBuses.size();i++){
                             //compare stops[i].stopName with next stop of the possible buses
                             //if they don't match, delete this bus from the list(and i--?)
+
+                            int indexOfLastStop = buses[busIndex.get(possibleBuses.get(i))].passStops.indexOf(lastStop);
+                            int indexOfCurrentStop = buses[busIndex.get(possibleBuses.get(i))].passStops.indexOf(stopsArray[currentStop]);
+
+                            if(indexOfCurrentStop!=(indexOfLastStop+1)){
+                                possibleBuses.remove(i);
+                                i--;
+                            }
+
                         }
                         if(possibleBuses.size() == 1){
-                            the_index = buses[index_of_this_bus].passStops.indexOf(stopsArray[currentStop].stopName);
+                            the_index = buses[busIndex.get(possibleBuses.get(0))].passStops.indexOf(stopsArray[currentStop].stopName);
                             //write to mysql
+                            Connection connection = null;
+                            try {
+                                Class.forName("com.mysql.jdbc.Driver");
+                            String jdbcUrl = String.format(
+                                    "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                                            + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                                    "culife",
+                                    "weighty-casing-235811:asia-east2:myinstance");
 
+                            connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                            } catch (ClassNotFoundException ex) {
+                                ex.printStackTrace();
+                            }
+                            try{
+                                Statement st = connection.createStatement();
+                                String sql = "INSERT INTO busInfo(busNum,stopIndex,time) VALUES('"+possibleBuses.get(0)+"','"+the_index+"','"+location.getTime()+"')";
+                                int result = st.executeUpdate(sql);
+                                connection.close();
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                            }
                             continue;
                         }
                         //if there are still more than 1 possible buslines
@@ -264,7 +359,8 @@ public class GpsService extends IntentService {
                         }
                     }
                     if(possibleBuses.size() == 1){
-
+                        if(the_index==-1)//if the_index is not initialized,i.e, only one possible bus at the beginnning
+                            the_index = buses[busIndex.get(possibleBuses.get(0))].passStops.indexOf(lastStop);
 
 //                        double deltaLng = location.getLongitude()-stopsArray[the_index].Longitude;
 //                        double deltaLat = location.getLatitude()-stopsArray[the_index].Latitude;
@@ -277,6 +373,30 @@ public class GpsService extends IntentService {
                         double distance = location.distanceTo(stopLocation);
                         if(distance<20.0) {
                             //write to mysql
+                            Connection connection = null;
+                            try {
+                                Class.forName("com.mysql.jdbc.Driver");
+                                String jdbcUrl = String.format(
+                                        "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                                                + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                                        "culife",
+                                        "weighty-casing-235811:asia-east2:myinstance");
+
+                                connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                            } catch (ClassNotFoundException ex) {
+                                ex.printStackTrace();
+                            }
+                            try{
+                                Statement st = connection.createStatement();
+                                String sql = "INSERT INTO busInfo(busNum,stopIndex,time) VALUES('"+possibleBuses.get(0)+"','"+the_index+"','"+location.getTime()+"')";
+                                int result = st.executeUpdate(sql);
+                                connection.close();
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                            }
                             count = 0; //if the user stop at a bus stop, clear the count value
                             continue;
                         }
@@ -286,6 +406,30 @@ public class GpsService extends IntentService {
                         distance = location.distanceTo(stopLocation);
                         if(distance<20.0){
                             //write to mysql
+                            Connection connection = null;
+                            try {
+                                Class.forName("com.mysql.jdbc.Driver");
+                                String jdbcUrl = String.format(
+                                        "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                                                + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                                        "culife",
+                                        "weighty-casing-235811:asia-east2:myinstance");
+
+                                connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                            } catch (ClassNotFoundException ex) {
+                                ex.printStackTrace();
+                            }
+                            try{
+                                Statement st = connection.createStatement();
+                                String sql = "INSERT INTO busInfo(busNum,stopIndex,time) VALUES('"+possibleBuses.get(0)+"','"+(the_index+1)+"','"+location.getTime()+"')";
+                                int result = st.executeUpdate(sql);
+                                connection.close();
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                            }
                             the_index++;
                             count = 0;      //if the user stop at a bus stop, clear the count value
                             continue;

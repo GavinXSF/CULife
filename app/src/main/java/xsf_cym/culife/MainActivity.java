@@ -143,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent select_stop = new Intent(MainActivity.this, SelectStop.class);
                 select_stop.putExtra("stops",stopsArray);
                 select_stop.putExtra("stop_names",initializedStops);
+                select_stop.putExtra("buses",buses_final);
                 startActivity(select_stop);
             }
         });

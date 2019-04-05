@@ -14,6 +14,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.NumberFormat;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -48,6 +56,7 @@ public class SelectStop extends AppCompatActivity {
         Intent intent = getIntent();
         final BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
         final ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
+        final Bus[] buses = (Bus[]) intent.getSerializableExtra("buses");
         final String[] stopNamesArray = stopNames.toArray(new String[stopNames.size()]);
 //        Log.d("Tsai",stopNamesArray[3]);
 
@@ -92,6 +101,20 @@ public class SelectStop extends AppCompatActivity {
                 String temp;
                 temp = inputText.getText().toString();
                 inputNum = Integer.parseInt(temp);
+                HashMap<String,Integer> busIndex = new HashMap<String, Integer>();
+
+                busIndex.put("1A",0);
+                busIndex.put("2",1);
+                busIndex.put("3",2);
+                busIndex.put("4",3);
+                busIndex.put("5",4);
+                busIndex.put("6A",5);
+                busIndex.put("7",6);
+                busIndex.put("8",7);
+                busIndex.put("N",8);
+                busIndex.put("H",9);
+                busIndex.put("6B",10);
+                busIndex.put("1B",11);
                 if((inputNum%100)>59 || (inputNum/100 > 24)){
                     Toast.makeText(SelectStop.this, "Wrong input\nInput format:HHmm", Toast.LENGTH_SHORT).show();
                 }
@@ -103,15 +126,55 @@ public class SelectStop extends AppCompatActivity {
                         while (iterator1.hasNext()){
                             String busNum = iterator1.next();
                             double bestTime;
-                            double timeFromDB = -1.0;
+                            long timeFromDB = -1;
+                            int stopIndexOfData=-1;
                             //todo: search for info in mysql; timeFromDB = currentTime - (found time + interval) (if valid time was found)
+                            Connection connection = null;
+                            try {
+                                Class.forName("com.mysql.jdbc.Driver");
+                                String jdbcUrl = String.format(
+                                        "jdbc:mysql://google/%s?cloudSqlInstance=%s"
+                                                + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
+                                        "culife",
+                                        "weighty-casing-235811:asia-east2:myinstance");
 
-                            if(timeFromDB==-1.0)
+                                connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                            } catch (ClassNotFoundException ex) {
+                                ex.printStackTrace();
+                            }
+                            try{
+                                Statement st = connection.createStatement();
+                                String sql = "SELECT * FROM busInfo WHERE busNum='"+busNum+"' and stopIndex between "+
+                                        (buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[selectedStop].stopName)-3) +" and "+
+                                        (buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[selectedStop].stopName)-1)+
+                                        "ORDER BY id DESC LIMIT 1";
+                                ResultSet rs = st.executeQuery(sql);
+                                rs.next();
+                                timeFromDB = rs.getLong("time");
+                                stopIndexOfData = rs.getInt("stopIndex");
+                                connection.close();
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                            }
+                            if(timeFromDB==-1)
                                 bestTime = waitingTimes.get(busNum);
-                            else
-                                bestTime = timeFromDB;
-
-                            stopInfo.add("Line "+ busNum + ": " + bestTime + " mins\n" );
+                            else{
+                                int travelTime = (int)(60*buses[busIndex.get(busNum)].estimateTime(buses[busIndex.get(busNum)].passStops.get(stopIndexOfData),stopsArray[selectedStop].stopName));
+                                long now = System.currentTimeMillis();
+                                long bestTimeInSeconds = (timeFromDB-now)/1000 +travelTime;
+                                double tempConverter = (double)bestTimeInSeconds;
+                                bestTime = tempConverter/60.0;
+                                if(bestTime<0.0)
+                                    bestTime = waitingTimes.get(busNum);
+                            }
+                            NumberFormat nf = NumberFormat.getNumberInstance();
+                            // 保留一位小数
+                            nf.setMaximumFractionDigits(1);
+                            nf.setRoundingMode(RoundingMode.UP);
+                            stopInfo.add("Line "+ busNum + ": " + nf.format(bestTime) + " mins\n" );
                         }
 
                         stopInfo.add(0, stopNamesArray[selectedStop]);
