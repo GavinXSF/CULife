@@ -1,16 +1,31 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "xsf_cym.culife"
-        minSdkVersion 24
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+        buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -27,5 +42,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.android.gms:play-services:12.0.1'
-    implementation files('libs/mysql-connector-java-8.0.15.jar')
+    implementation files('libs/mysql-connector-java-5.1.46.jar')
+
+    // https://mvnrepository.com/artifact/com.google.cloud.sql/mysql-socket-factory
+    implementation 'com.google.cloud.sql:mysql-socket-factory:1.0.13'
+
 }
+

@@ -84,15 +84,6 @@ public class GpsService extends IntentService {
 
             // 得到location object
             location = locationManager.getLastKnownLocation(locationProvider);
-            //监视地理位置变化
-            locationManager.requestLocationUpdates(locationProvider, 2000, 15, locationListener);
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-
-//            if (location != null) {
-//                //不为空
-//            }
-            // add LocationListener
             locationListener = new LocationListener() {
                 private Location lastLocation = null;
                 private double calculatedSpeed = 0.0;
@@ -114,12 +105,29 @@ public class GpsService extends IntentService {
 
                 @Override
                 public synchronized void onLocationChanged(Location location) {
-                        if(lastLocation!=null){
-                            calculatedSpeed = 1000 * lastLocation.distanceTo(location)/(location.getTime()-lastLocation.getTime());
-                        }
-                        this.lastLocation=location;
-                        objs[0]=calculatedSpeed;
+                    if(lastLocation!=null){
+                        calculatedSpeed = 1000 * lastLocation.distanceTo(location)/(location.getTime()-lastLocation.getTime());
+                    }
+                    this.lastLocation=location;
+                    objs[0]=calculatedSpeed;
                 }};
+            //监视地理位置变化
+            locationManager.requestLocationUpdates(locationProvider, 2000, 15, locationListener);
+
+
+            if (location != null) {
+                //不为空
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+            else
+                try{
+                    Thread.sleep(10000);}
+                catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            // add LocationListener
+
             int count = 0;
             int stopIndex = -1;
             boolean atBusstop = false;
@@ -210,11 +218,7 @@ public class GpsService extends IntentService {
                                 Connection connection = null;
                                 try {
                                     Class.forName("com.mysql.jdbc.Driver");
-                                    String jdbcUrl = String.format(
-                                            "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                                                    + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                                            "culife",
-                                            "weighty-casing-235811:asia-east2:myinstance");
+                                    String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
 
                                     connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
                                 } catch (SQLException ex) {
@@ -330,11 +334,7 @@ public class GpsService extends IntentService {
                             Connection connection = null;
                             try {
                                 Class.forName("com.mysql.jdbc.Driver");
-                            String jdbcUrl = String.format(
-                                    "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                                            + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                                    "culife",
-                                    "weighty-casing-235811:asia-east2:myinstance");
+                                String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
 
                             connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
                             } catch (SQLException ex) {
@@ -376,11 +376,7 @@ public class GpsService extends IntentService {
                             Connection connection = null;
                             try {
                                 Class.forName("com.mysql.jdbc.Driver");
-                                String jdbcUrl = String.format(
-                                        "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                                                + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                                        "culife",
-                                        "weighty-casing-235811:asia-east2:myinstance");
+                                String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
 
                                 connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
                             } catch (SQLException ex) {
@@ -409,11 +405,7 @@ public class GpsService extends IntentService {
                             Connection connection = null;
                             try {
                                 Class.forName("com.mysql.jdbc.Driver");
-                                String jdbcUrl = String.format(
-                                        "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                                                + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                                        "culife",
-                                        "weighty-casing-235811:asia-east2:myinstance");
+                                String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
 
                                 connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
                             } catch (SQLException ex) {

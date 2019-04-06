@@ -128,11 +128,7 @@ public class MyRoute extends AppCompatActivity {
                     Connection connection = null;
                     try {
                         Class.forName("com.mysql.jdbc.Driver");
-                        String jdbcUrl = String.format(
-                                "jdbc:mysql://google/%s?cloudSqlInstance=%s"
-                                        + "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-                                "culife",
-                                "weighty-casing-235811:asia-east2:myinstance");
+                        String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
 
                         connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
                     } catch (SQLException ex) {
