@@ -57,6 +57,28 @@ public class GpsService extends IntentService {
 
 
     }
+    private Location getBestLocation(LocationManager locationManager) {
+        Location result = null;
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED ) {
+            // 待解决, 在服务中若检查到没有权限怎么办
+            Toast.makeText(this,"没有权限（多次更新）",Toast.LENGTH_SHORT).show();
+        }else {
+            if (locationManager != null) {
+                result = locationManager
+                        .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (result != null) {
+                    return result;
+                } else {
+                    result = locationManager
+                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    return result;
+                }
+            }
+        }
+        return result;
+    }
+
 
     @Override
     public void onHandleIntent(Intent intent){
@@ -68,6 +90,7 @@ public class GpsService extends IntentService {
                 PackageManager.PERMISSION_GRANTED ) {
             // 待解决, 在服务中若检查到没有权限怎么办
 //            ActivityCompat.requestPermissions(GpsService.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            Toast.makeText(this,"没有权限（首次请求）",Toast.LENGTH_SHORT).show();
         }else {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             List<String> providers = locationManager.getProviders(true);
@@ -105,11 +128,16 @@ public class GpsService extends IntentService {
 
                 @Override
                 public synchronized void onLocationChanged(Location location) {
+
+                    location = getBestLocation(locationManager);
+
                     if(lastLocation!=null){
                         calculatedSpeed = 1000 * lastLocation.distanceTo(location)/(location.getTime()-lastLocation.getTime());
+                        this.lastLocation=location;
+                        objs[0]=calculatedSpeed;
                     }
-                    this.lastLocation=location;
-                    objs[0]=calculatedSpeed;
+
+
                 }};
             //监视地理位置变化
             locationManager.requestLocationUpdates(locationProvider, 2000, 15, locationListener);
@@ -175,7 +203,7 @@ public class GpsService extends IntentService {
                 if(count>30)
                     stopSelf();
             }
-            //second whilt loop: find out when the user get on the bus
+            //second while loop: find out when the user get on the bus
             count = 0;
             while (true){
                 long getOnTime = 0;
@@ -194,7 +222,7 @@ public class GpsService extends IntentService {
                             getOnTime = location.getTime();//milliseconds since epoch
                             Date date = new Date(getOnTime);
                             DateFormat formatter = new SimpleDateFormat("HHmm");
-                            formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+                            formatter.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
                             String dateFormatted = formatter.format(date);
                             int time;
                             try {
@@ -282,7 +310,7 @@ public class GpsService extends IntentService {
             //third while loop: find out which bus the user take, and use their gps info to update bus info in our database
             count = 0;
             String lastStop = stopsArray[stopIndex].stopName;
-
+            int writing_count = 0;
             while(true){
                 double userSpeed = (double)objs[0];
                 int the_index = -1;
@@ -336,7 +364,8 @@ public class GpsService extends IntentService {
                                 Class.forName("com.mysql.jdbc.Driver");
                                 String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
 
-                            connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+                                connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+
                             } catch (SQLException ex) {
                                 ex.printStackTrace();
                             } catch (ClassNotFoundException ex) {
@@ -372,6 +401,8 @@ public class GpsService extends IntentService {
                         stopLocation.setLongitude(stopsArray[the_index].Longitude);
                         double distance = location.distanceTo(stopLocation);
                         if(distance<20.0) {
+                            if(writing_count>=24)//if this user already stay at the same stop for 2mins, stop tracking their gps
+                                stopSelf();
                             //write to mysql
                             Connection connection = null;
                             try {
@@ -389,6 +420,7 @@ public class GpsService extends IntentService {
                                 String sql = "INSERT INTO busInfo(busNum,stopIndex,time) VALUES('"+possibleBuses.get(0)+"','"+the_index+"','"+location.getTime()+"')";
                                 int result = st.executeUpdate(sql);
                                 connection.close();
+                                writing_count++;  //count how many times in a row the user wrote to db at this stop
                             }
                             catch (Exception e){
                                 e.printStackTrace();
@@ -424,13 +456,14 @@ public class GpsService extends IntentService {
                             }
                             the_index++;
                             count = 0;      //if the user stop at a bus stop, clear the count value
+                            writing_count = 0; // if the user arrive at next stop, clear previous writing_count values
                             continue;
                         }
                         else{
                             count++;
                         }
-                        //if the user stop at somewhere other than a bus stop for 30 times in a row, stop tracking their location
-                        if(count>30){
+                        //if the user stop at somewhere other than a bus stop for 10 times in a row, stop tracking their location
+                        if(count>10){
                             stopSelf();
                         }
 
@@ -443,7 +476,7 @@ public class GpsService extends IntentService {
                 else if(userSpeed>4) {
                     count = 0;  // if user move at the speed of car, clear
                 }
-                else {
+                else {     //if the user moves like walking for more than 2.5mins, stop tracking
                     count++;
                 }
                 if(count>30){
