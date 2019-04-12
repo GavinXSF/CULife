@@ -143,17 +143,11 @@ public class GpsService extends IntentService {
             locationManager.requestLocationUpdates(locationProvider, 2000, 15, locationListener);
 
 
-            if (location != null) {
+            while (location == null) {
                 //不为空
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
+
             }
-            else
-                try{
-                    Thread.sleep(10000);}
-                catch (InterruptedException e){
-                    e.printStackTrace();
-                }
+
             // add LocationListener
 
             int count = 0;

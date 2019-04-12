@@ -34,7 +34,9 @@ public class MyRoute extends AppCompatActivity {
     private ArrayList<String> endStop = new ArrayList<String>();
     private ListView myListView;
     private ArrayAdapter myAdapter;
-
+    private HashMap<String,Double> waitingTimes = new HashMap<String, Double>();
+    public static Object lock=new Object();
+    private Integer myI;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,61 +114,81 @@ public class MyRoute extends AppCompatActivity {
             busIndex.put("1B",11);
 
             for(int i = 0; i < startStop.size(); i++){
+
                 routes[i] = new Route(Integer.parseInt((String)startTime.get(i)),
                         (String)startStop.get(i),(String)endStop.get(i));
                 routes[i].computeLine(stopsArray,buses);
-                HashMap<String,Double> waitingTimes = new HashMap<String, Double>();
-                waitingTimes = stopsArray[stopNames.indexOf(routes[i].startPosition)].waitingTime(routes[i].startTime, routes[i].validBus);
-                Set<String> keys=waitingTimes.keySet();
-                Iterator<String> iterator1=keys.iterator();
-                while (iterator1.hasNext()){
-                    String busNum = iterator1.next();
-                    double bestTime;
-                    long timeFromDB = -1;
-                    int stopIndexOfData=-1;
-                    //todo: search for info in mysql; timeFromDB = (found time + interval)-currentTime (if valid time was found)
-                    Connection connection = null;
+                myI = i;
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        synchronized(lock) {
+                            waitingTimes = stopsArray[stopNames.indexOf(routes[myI].startPosition)].waitingTime(routes[myI].startTime, routes[myI].validBus);
+                            Set<String> keys = waitingTimes.keySet();
+                            Iterator<String> iterator1 = keys.iterator();
+                            while (iterator1.hasNext()) {
+                                String busNum = iterator1.next();
+                                double bestTime;
+                                long timeFromDB = -1;
+                                int stopIndexOfData = -1;
+                                //todo: search for info in mysql; timeFromDB = (found time + interval)-currentTime (if valid time was found)
+                                Connection connection = null;
+                                try {
+                                    Class.forName("com.mysql.jdbc.Driver");
+                                    String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
+
+                                    connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+                                } catch (SQLException ex) {
+                                    ex.printStackTrace();
+                                } catch (ClassNotFoundException ex) {
+                                    ex.printStackTrace();
+                                }
+                                try {
+                                    Statement st = connection.createStatement();
+                                    String sql = "SELECT * FROM busInfo WHERE busNum='" + busNum + "' and stopIndex between " +
+                                            (buses[busIndex.get(busNum)].passStops.indexOf(routes[myI].startPosition) - 3) + " and " +
+                                            (buses[busIndex.get(busNum)].passStops.indexOf(routes[myI].startPosition) - 1) +
+                                            "ORDER BY id DESC LIMIT 1";
+                                    ResultSet rs = st.executeQuery(sql);
+                                    if(rs.next()) {
+                                        timeFromDB = rs.getLong("time");
+                                        stopIndexOfData = rs.getInt("stopIndex");
+                                    }
+                                    connection.close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                if (timeFromDB == -1.0)
+                                    bestTime = waitingTimes.get(busNum);
+                                else {
+                                    int travelTime = (int) (60 * buses[busIndex.get(busNum)].estimateTime(buses[busIndex.get(busNum)].passStops.get(stopIndexOfData), routes[myI].startPosition));
+                                    long now = System.currentTimeMillis();
+                                    long bestTimeInSeconds = (timeFromDB - now) / 1000 + travelTime;
+                                    double tempConverter = (double) bestTimeInSeconds;
+                                    bestTime = tempConverter / 60.0;
+                                    if (bestTime < 0.0)
+                                        bestTime = waitingTimes.get(busNum);
+                                }
+
+
+                                firstHalf.add("Line " + busNum + ": " + nf.format(bestTime) + " mins\nEstimated travel time: ");
+                            }
+                            Log.d("Tsai", "notify" + lock);
+                            lock.notify();
+
+                        }
+
+                    }});
+
+
+                synchronized (lock) {
                     try {
-                        Class.forName("com.mysql.jdbc.Driver");
-                        String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
-
-                        connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    } catch (ClassNotFoundException ex) {
-                        ex.printStackTrace();
-                    }
-                    try{
-                        Statement st = connection.createStatement();
-                        String sql = "SELECT * FROM busInfo WHERE busNum='"+busNum+"' and stopIndex between "+
-                                (buses[busIndex.get(busNum)].passStops.indexOf(routes[i].startPosition)-3) +" and "+
-                                (buses[busIndex.get(busNum)].passStops.indexOf(routes[i].startPosition)-1)+
-                                "ORDER BY id DESC LIMIT 1";
-                        ResultSet rs = st.executeQuery(sql);
-                        rs.next();
-                        timeFromDB = rs.getLong("time");
-                        stopIndexOfData = rs.getInt("stopIndex");
-                        connection.close();
-                    }
-                    catch (Exception e){
+                        thread.start();
+                        Log.d("Tsai", "wait"+lock );
+                        lock.wait();
+                    } catch (Exception e) {
                         e.printStackTrace();
-                    }
-                    if(timeFromDB==-1.0)
-                        bestTime = waitingTimes.get(busNum);
-                    else{
-                        int travelTime = (int)(60*buses[busIndex.get(busNum)].estimateTime(buses[busIndex.get(busNum)].passStops.get(stopIndexOfData),routes[i].startPosition));
-                        long now = System.currentTimeMillis();
-                        long bestTimeInSeconds = (timeFromDB-now)/1000 +travelTime;
-                        double tempConverter = (double)bestTimeInSeconds;
-                        bestTime = tempConverter/60.0;
-                        if(bestTime<0.0)
-                            bestTime = waitingTimes.get(busNum);
-                    }
-
-
-                    firstHalf.add("Line "+ busNum + ": " + nf.format(bestTime) + " mins\nEstimated travel time: " );
-                }
-
+                    }}
            //     Log.d("Tsai", stopsArray[stopNames.indexOf(routes[i].destination)].stopName +" "+routes[i].startPosition+" "+routes[i].destination+"  "+routes[i].validBus[0]+" "+routes[i].validBus[1]+" "+routes[i].validBus[2]);
                 displayInfo.add("Route"+(i+1)+ "\n" + routes[i].startPosition + " → " + routes[i].destination + "\n" + routes[i].startTime/100 + ":" + routes[i].startTime%100);
                 int index = 0;

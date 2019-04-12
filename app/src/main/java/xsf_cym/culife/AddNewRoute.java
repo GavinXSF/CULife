@@ -24,6 +24,8 @@ public class AddNewRoute extends AppCompatActivity {
     private String startStop;
     private String endStop;
     private String startTime;
+    private String hour;
+    private String minute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class AddNewRoute extends AppCompatActivity {
         timeHour.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                startTime = timeHours[position];
+                hour = timeHours[position];
 //                Toast.makeText(AddNewRoute.this, "You clicked:"+clickStop, Toast.LENGTH_SHORT).show();
             }
 
@@ -100,7 +102,7 @@ public class AddNewRoute extends AppCompatActivity {
         timeMin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                startTime += timeMins[position];
+                minute = timeMins[position];
 //                Toast.makeText(AddNewRoute.this, "You clicked:"+clickStop, Toast.LENGTH_SHORT).show();
             }
 
@@ -114,7 +116,7 @@ public class AddNewRoute extends AppCompatActivity {
         btn1.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v)  {
-
+               startTime = hour + minute;
                File newFile = new File(AddNewRoute.this.getFilesDir().getAbsolutePath(), "my_route.txt");
              //  Log.d("Tsai", startTime);
                try {
