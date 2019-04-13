@@ -163,15 +163,18 @@ public class MyRoute extends AppCompatActivity {
                                 else {
                                     int travelTime = (int) (60 * buses[busIndex.get(busNum)].estimateTime(buses[busIndex.get(busNum)].passStops.get(stopIndexOfData), routes[myI].startPosition));
                                     long now = System.currentTimeMillis();
+                                    double errorAllowance = (buses[busIndex.get(busNum)].passStops.indexOf(routes[myI].startPosition)-stopIndexOfData)*1.5;
                                     long bestTimeInSeconds = (timeFromDB - now) / 1000 + travelTime;
                                     double tempConverter = (double) bestTimeInSeconds;
                                     bestTime = tempConverter / 60.0;
-                                    if (bestTime < 0.0)
+                                    if (bestTime < -errorAllowance)
                                         bestTime = waitingTimes.get(busNum);
                                 }
 
-
-                                firstHalf.add("Line " + busNum + ": " + nf.format(bestTime) + " mins\nEstimated travel time: ");
+                                if(bestTime>0.0)
+                                    firstHalf.add("Line " + busNum + ": " + nf.format(bestTime) + " mins\nEstimated travel time: ");
+                                else
+                                    firstHalf.add("Line " + busNum + ": Due\nEstimated travel time: ");
                             }
                             Log.d("Tsai", "notify" + lock);
                             lock.notify();

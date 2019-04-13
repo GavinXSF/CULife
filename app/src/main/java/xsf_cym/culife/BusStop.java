@@ -10,6 +10,7 @@ public class BusStop implements Serializable {
     String stopName;
     double[][] standardTime = new double[12][];
     int[] sizeOfPeriod = new int[12];
+    private double[] errorAllowance = new double[12];
     ArrayList<String> lineNum = new ArrayList<>();
     Double Longitude;
     Double Latitude;
@@ -27,6 +28,7 @@ public class BusStop implements Serializable {
             if(passLines[i]){
                 lineNum.add(buses[i].busNum);
                 double sumOfTime = 0;
+                errorAllowance[i] = buses[i].passStops.indexOf(stopName)*1.0;
                 for(int j = 0; j < buses[i].passStops.indexOf(stopName); j++){
                     sumOfTime += buses[i].interval.get(j);
                 }
@@ -57,12 +59,12 @@ public class BusStop implements Serializable {
                 double nearestTime = 60.0;
                 for(int j = 0; j < sizeOfPeriod[i]; j++){
                     double wait;
-                    if((startTime % 100) > standardTime[i][j])
-                        wait = standardTime[i][j] + 60 - (startTime % 100);
+                    if((startTime % 100) > (standardTime[i][j]+errorAllowance[i]))
+                        wait = standardTime[i][j]+ errorAllowance[i] + 60 - (startTime % 100);
                     else
-                        wait = standardTime[i][j] - (startTime % 100);
+                        wait = standardTime[i][j] + errorAllowance[i] - (startTime % 100);
                     if(wait < nearestTime)
-                        nearestTime = wait;
+                        nearestTime = wait - errorAllowance[i];
                 }
                 hashmap.put(lineNum.get(index),nearestTime);
 //                displayInfo.add("Line "+ lineNum.get(index) + ": " + nearestTime + " mins\n" );
@@ -81,12 +83,12 @@ public class BusStop implements Serializable {
                 double nearestTime = 60.0;
                 for(int j = 0; j < sizeOfPeriod[i]; j++){
                     double wait = 0;
-                    if((startTime % 100) > standardTime[i][j])
-                        wait = standardTime[i][j] + 60 - (startTime % 100);
+                    if((startTime % 100) > (standardTime[i][j]+errorAllowance[i]))
+                        wait = standardTime[i][j]+ errorAllowance[i] + 60 - (startTime % 100);
                     else
-                        wait = standardTime[i][j] - (startTime % 100);
+                        wait = standardTime[i][j] + errorAllowance[i] - (startTime % 100);
                     if(wait < nearestTime)
-                        nearestTime = wait;
+                        nearestTime = wait - errorAllowance[i];
                 }
                 if(filters[i])
                     hashmap.put(lineNum.get(index),nearestTime);

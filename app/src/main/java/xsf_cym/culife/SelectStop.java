@@ -275,9 +275,10 @@ public class SelectStop extends AppCompatActivity {
                                                 int travelTime = (int) (60 * buses[busIndex.get(busNum)].estimateTime(buses[busIndex.get(busNum)].passStops.get(stopIndexOfData), stopsArray[selectedStop].stopName));
                                                 long now = System.currentTimeMillis();
                                                 long bestTimeInSeconds = (timeFromDB - now) / 1000 + travelTime;
+                                                double errorAllowance = (buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[selectedStop].stopName)-stopIndexOfData)*1.5;
                                                 double tempConverter = (double) bestTimeInSeconds;
                                                 bestTime = tempConverter / 60.0;
-                                                if (bestTime < 0.0)
+                                                if (bestTime < -errorAllowance)
                                                     bestTime = waitingTimes.get(busNum);
                                             } else {
                                                 bestTime = waitingTimes.get(busNum);
@@ -287,7 +288,10 @@ public class SelectStop extends AppCompatActivity {
                                             // 保留一位小数
                                             nf.setMaximumFractionDigits(1);
                                             nf.setRoundingMode(RoundingMode.UP);
-                                            stopInfo.add("Line " + busNum + ": " + nf.format(bestTime) + " mins\n");
+                                            if(bestTime>0.0)
+                                                stopInfo.add("Line " + busNum + ": " + nf.format(bestTime) + " mins\n");
+                                            else
+                                                stopInfo.add("Line " + busNum + ": Due\n");
                                         }
                                         Log.d("Tsai", "notify" +lock);
                                         lock.notify();

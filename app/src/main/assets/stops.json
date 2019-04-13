@@ -21,19 +21,24 @@
             "latitude": "22.419874"
         },
         {
-            "name": "Residences 3 & 4",
+            "name": "Residences 3 & 4(to Shaw)",
             "longitude": "114.203439",
             "latitude": "22.421435"
         },
         {
-            "name": "Shaw College",
+            "name": "Shaw College(to Main Campus)",
             "longitude": "114.2012769",
             "latitude": "22.4224589"
         },
         {
-            "name": "C.W. Chu College(down)",
-            "longitude": "tbf",
-            "latitude": "tbf"
+            "name": "Shaw College(to C.W. Chu College)",
+            "longitude": "114.201379",
+            "latitude": "22.422532"
+        },
+        {
+            "name": "C.W. Chu College(uphill)",
+            "longitude": "114.205889",
+            "latitude": "22.425727"
         },
         {
             "name": "Residence 15",
@@ -51,7 +56,7 @@
             "latitude": "22.421820"
         },
         {
-            "name": "Residences 3 & 4(to Central Campus)",
+            "name": "Residences 3 & 4(to Main Campus)",
             "longitude": "114.203493",
             "latitude": "22.420871"
         },
