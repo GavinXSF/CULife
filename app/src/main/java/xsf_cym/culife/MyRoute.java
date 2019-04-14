@@ -163,7 +163,7 @@ public class MyRoute extends AppCompatActivity {
                                 else {
                                     int travelTime = (int) (60 * buses[busIndex.get(busNum)].estimateTime(buses[busIndex.get(busNum)].passStops.get(stopIndexOfData), routes[myI].startPosition));
                                     long now = System.currentTimeMillis();
-                                    double errorAllowance = (buses[busIndex.get(busNum)].passStops.indexOf(routes[myI].startPosition)-stopIndexOfData)*1.5;
+                                    double errorAllowance = (buses[busIndex.get(busNum)].passStops.indexOf(routes[myI].startPosition)-stopIndexOfData)*2.0;
                                     long bestTimeInSeconds = (timeFromDB - now) / 1000 + travelTime;
                                     double tempConverter = (double) bestTimeInSeconds;
                                     bestTime = tempConverter / 60.0;

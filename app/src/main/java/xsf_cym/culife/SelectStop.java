@@ -1,6 +1,7 @@
 package xsf_cym.culife;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,11 +13,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,11 +50,18 @@ public class SelectStop extends AppCompatActivity {
     private LocationListener locationListener;
     private Spinner mySpinner;
     private EditText inputText;
+    private ListView mListView1;
+    private ListView mListView2;
+    private ArrayAdapter myAdapter;
     private Button btn;
     private int inputNum;
     private HashMap<String, Double> waitingTimes;
     private ArrayList<String> stopInfo = new ArrayList<String>();
+    private ArrayList<String> timeInfo = new ArrayList<String>();
     private int selectedStop = -1;
+    private ArrayList<String> busNumList = new ArrayList<String>();
+    private ArrayList<Integer> stopIndexList = new ArrayList<Integer>();
+    private ArrayList<Boolean> isDueList = new ArrayList<Boolean>();
     public SelectStop() {
     }
 
@@ -79,13 +91,20 @@ public class SelectStop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_stop);
-        ActionBar topBar = getSupportActionBar();
+//        ActionBar topBar = getSupportActionBar();
+//
+//            topBar.hide();
+//
+//        TextView updateTopbar = findViewById(R.id.topbar_textview);
+//        updateTopbar.setText("Select Stop");
+        mListView1 = (ListView) findViewById(R.id.myListView);
+        myAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,stopInfo);
 
-            topBar.hide();
+        mListView1.setAdapter(myAdapter);
+        mListView2 = (ListView) findViewById(R.id.myListView2);
+        MyAdapter myAdapter2 = new MyAdapter(timeInfo,busNumList,stopIndexList,isDueList);
 
-        TextView updateTopbar = findViewById(R.id.topbar_textview);
-        updateTopbar.setText("Select Stop");
-
+        mListView2.setAdapter(myAdapter2);
 
 
         Intent intent = getIntent();
@@ -187,18 +206,17 @@ public class SelectStop extends AppCompatActivity {
 
             }
         });
-        inputText = (EditText) findViewById(R.id.inputTime);
-        Calendar calendar = Calendar.getInstance();
-        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        final int minutes = calendar.get(Calendar.MINUTE);
-        inputText.setText((hour*100+minutes)+"");
+
+
+
         btn = (Button) findViewById(R.id.btn1);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String temp;
-                temp = inputText.getText().toString();
-                inputNum = Integer.parseInt(temp);
+                Calendar calendar = Calendar.getInstance();
+                final int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                final int minutes = calendar.get(Calendar.MINUTE);
+                inputNum = hour*100+minutes;
                 HashMap<String,Integer> busIndex = new HashMap<String, Integer>();
 
                 busIndex.put("1A",0);
@@ -219,13 +237,17 @@ public class SelectStop extends AppCompatActivity {
                 else {
                     if (selectedStop > -1) {
                         stopInfo.clear();
-
+                        timeInfo.clear();
+                        busNumList.clear();
+                        stopIndexList.clear();
+                        isDueList.clear();
 
                             //search for info in mysql; timeFromDB = currentTime - (found time + interval) (if valid time was found)
                         Thread thread = new Thread(new Runnable() {
                                 @Override
                                 public void run() {
                                     synchronized(lock) {
+
                                         waitingTimes = stopsArray[selectedStop].waitingTime(inputNum);
                                         Set<String> keys=waitingTimes.keySet();
                                         Iterator<String> iterator1=keys.iterator();
@@ -275,7 +297,7 @@ public class SelectStop extends AppCompatActivity {
                                                 int travelTime = (int) (60 * buses[busIndex.get(busNum)].estimateTime(buses[busIndex.get(busNum)].passStops.get(stopIndexOfData), stopsArray[selectedStop].stopName));
                                                 long now = System.currentTimeMillis();
                                                 long bestTimeInSeconds = (timeFromDB - now) / 1000 + travelTime;
-                                                double errorAllowance = (buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[selectedStop].stopName)-stopIndexOfData)*1.5;
+                                                double errorAllowance = (buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[selectedStop].stopName)-stopIndexOfData)*2.0;
                                                 double tempConverter = (double) bestTimeInSeconds;
                                                 bestTime = tempConverter / 60.0;
                                                 if (bestTime < -errorAllowance)
@@ -288,10 +310,18 @@ public class SelectStop extends AppCompatActivity {
                                             // 保留一位小数
                                             nf.setMaximumFractionDigits(1);
                                             nf.setRoundingMode(RoundingMode.UP);
-                                            if(bestTime>0.0)
-                                                stopInfo.add("Line " + busNum + ": " + nf.format(bestTime) + " mins\n");
-                                            else
-                                                stopInfo.add("Line " + busNum + ": Due\n");
+                                            if(bestTime>0.0){
+                                                timeInfo.add("Line " + busNum + ": " + nf.format(bestTime) + " mins\n");
+                                                busNumList.add(busNum);
+                                                stopIndexList.add(buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[selectedStop].stopName));
+                                                isDueList.add(false);
+                                            }
+                                            else{
+                                                timeInfo.add("Line " + busNum + ": Due\n");
+                                                busNumList.add(busNum);
+                                                stopIndexList.add(buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[selectedStop].stopName));
+                                                isDueList.add(true);
+                                            }
                                         }
                                         Log.d("Tsai", "notify" +lock);
                                         lock.notify();
@@ -316,14 +346,21 @@ public class SelectStop extends AppCompatActivity {
                             stopInfo.add(1, inputNum/100 + ":0" + inputNum%100);
                         else
                             stopInfo.add(1, inputNum/100 + ":" + inputNum%100);
+
+//                        mListView1.postInvalidate();
+//                        mListView2.postInvalidate();
+                        myAdapter.notifyDataSetChanged();
+                        myAdapter2.notifyDataSetChanged();
+
 //                        stopInfo.add(1,"Lat:"+stopsArray[selectedStop].Latitude);
-                        Intent stop_info = new Intent(SelectStop.this, StopInfo.class);
-                        stop_info.putExtra("stops_info", stopInfo);
-                        startActivity(stop_info);
+
                     }
                 }
+
             }
         });
 
     }
 }
+
+

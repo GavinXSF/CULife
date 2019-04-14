@@ -125,7 +125,7 @@ public class Bus implements Serializable {
                 interval.add(2.0);
                 passStops.add("Area 39");
                 interval.add(2.0);
-                passStops.add("C.W. Chu College");
+                passStops.add("C.W. Chu College(uphill)");
                 interval.add(3.0);
                 passStops.add("Residence 15");
                 interval.add(2.0);
@@ -133,9 +133,9 @@ public class Bus implements Serializable {
                 interval.add(1.0);
                 passStops.add("Chan Chun Ha Hostel");
                 interval.add(2.0);
-                passStops.add("Shaw College");
+                passStops.add("Shaw College(to Main Campus)");
                 interval.add(2.0);
-                passStops.add("Residences 3 & 4");
+                passStops.add("Residences 3 & 4(to Main Campus)");
                 interval.add(3.0);
                 passStops.add("New Asia College");
                 interval.add(1.0);
