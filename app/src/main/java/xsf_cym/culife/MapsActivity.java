@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
@@ -36,16 +37,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        this.setTitle("My location");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
-//        int permissionCheck = ContextCompat.checkSelfPermission(MapsActivity.this,
-//                Manifest.permission.ACCESS_FINE_LOCATION);
-//        if(permissionCheck == PackageManager.PERMISSION_DENIED)
-//            Toast.makeText(MapsActivity.this,"No Permission",Toast.LENGTH_LONG).show();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED ) {
@@ -106,6 +103,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager.requestLocationUpdates(locationProvider, 3000, 1, locationListener);
 
         }
+
+
+//        SupportMapFragment mMapFragment = SupportMapFragment.newInstance();
+//        FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
+//        fragmentTransaction.add(R.id.map, mMapFragment);
+//        fragmentTransaction.commit();
+//        mMapFragment.getMapAsync(this);
 
     }
 

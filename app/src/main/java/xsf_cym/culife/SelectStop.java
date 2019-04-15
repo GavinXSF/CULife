@@ -92,6 +92,8 @@ public class SelectStop extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_stop);
+
+        this.setTitle("Select stop");
 //        ActionBar topBar = getSupportActionBar();
 //
 //            topBar.hide();

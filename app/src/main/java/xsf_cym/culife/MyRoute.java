@@ -42,6 +42,8 @@ public class MyRoute extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_route);
 
+        this.setTitle("My routes");
+
         Intent intent = getIntent();
         BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
         Bus[] buses = (Bus[]) intent.getSerializableExtra("buses");
@@ -142,7 +144,7 @@ public class MyRoute extends AppCompatActivity {
 
 
            //     Log.d("Tsai", stopsArray[stopNames.indexOf(routes[i].destination)].stopName +" "+routes[i].startPosition+" "+routes[i].destination+"  "+routes[i].validBus[0]+" "+routes[i].validBus[1]+" "+routes[i].validBus[2]);
-                displayInfo.add("Route"+(i+1)+ "\n" + routes[i].startPosition + " → " + routes[i].destination + "\n" + routes[i].startTime/100 + ":" + routes[i].startTime%100);
+                displayInfo.add("Route"+(i+1)+ "/n" + routes[i].startPosition + " → " + routes[i].destination + "/n" + routes[i].startTime/100 + ":" + routes[i].startTime%100);
                 int index = 0;
 
                 for(int j = 0; j < firstHalf.size(); j++){
@@ -152,7 +154,7 @@ public class MyRoute extends AppCompatActivity {
                             break;
                         }
                     }
-                    displayInfo.add(firstHalf.get(j)+ nf.format(buses[index - 1].estimateTime(routes[i].startPosition,routes[i].destination)) + " mins\n");
+                    displayInfo.add(firstHalf.get(j)+ nf.format(buses[index - 1].estimateTime(routes[i].startPosition,routes[i].destination)) + " mins/n");
                 }
             }
         }
