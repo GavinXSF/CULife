@@ -5,11 +5,11 @@
     android:layout_width="match_parent">
 
     <gradient
-        android:angle="135"
+        android:angle="90"
         android:centerX="0.5"
         android:centerY="0.5"
-        android:endColor="#b3ffab"
-        android:startColor="#12fff7"
+        android:endColor="#A8E6CF"
+        android:startColor="#FFD3B6"
         android:type="linear" />
 
 

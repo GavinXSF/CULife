@@ -32,11 +32,10 @@ public class AddNewRoute extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_route);
 
-        ActionBar topBar = getSupportActionBar();
-        topBar.hide();
+        this.setTitle("Add new route");
 
-        TextView updateTopbar = findViewById(R.id.topbar_textview);
-        updateTopbar.setText("Add New Route");
+//        TextView updateTopbar = findViewById(R.id.topbar_textview);
+//        updateTopbar.setText("Add New Route");
 
         Intent intent = getIntent();
         final BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
@@ -146,5 +145,8 @@ public class AddNewRoute extends AppCompatActivity {
          });
 
     }
+
+
+
 
 }

@@ -4,10 +4,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/add_route_background">
 
-    <include layout="@layout/top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        />
+    <!--<include layout="@layout/top_bar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="55dp"-->
+        <!--/>-->
 
     <Spinner
         android:id="@+id/start_time_hours"
@@ -16,7 +16,7 @@
         android:entries="@array/timePoint_hour"
         android:layout_centerVertical="true"
         android:layout_marginLeft="110dp"
-        >
+        android:layout_marginStart="110dp">
 
     </Spinner>
 
@@ -28,7 +28,8 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/start_time_hours"
         android:layout_toEndOf="@id/start_time_hours"
-        android:layout_marginLeft="30dp">
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp">
     </Spinner>
 
     <Spinner
@@ -36,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
-        android:layout_above="@id/start_time_hours"
+        android:layout_above="@id/hours"
         android:layout_marginBottom="40dp">
     </Spinner>
 
@@ -46,50 +47,56 @@
         android:layout_height="40dp"
         android:entries="@array/stopName"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/start_time_hours"
-        android:layout_marginTop="40dp">
+        android:layout_below="@id/stop"
+        android:layout_marginTop="20dp">
     </Spinner>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/start"
-        android:text="Start Stop"
-        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_above="@id/startpos_spinner"
-        android:textColor="#716e77"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/stop"
-        android:text="End Stop"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/start_time_hours"
-        android:layout_marginTop="25dp"
-        android:textColor="#716e77"/>
+        android:layout_marginBottom="20dp"
+        android:text="@string/start_stop"
+        android:textColor="@color/diamondHill"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/start_time_hours"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/end_stop"
+        android:textColor="@color/diamondHill"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/hours"
-        android:text="Hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/start_time_hours"
         android:layout_alignStart="@id/start_time_hours"
         android:layout_alignLeft="@id/start_time_hours"
-        android:layout_above="@id/start_time_hours"
         android:layout_marginBottom="2dp"
-        android:textColor="#716e77"/>
+        android:text="@string/hour"
+        android:textColor="@color/diamondHill" />
 
     <TextView
+        android:id="@+id/minutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/minutes"
-        android:text="Minute"
-        android:layout_alignLeft="@id/start_time_minutes"
-        android:layout_alignStart="@id/start_time_minutes"
         android:layout_above="@id/start_time_minutes"
+        android:layout_alignStart="@id/start_time_minutes"
+        android:layout_alignLeft="@id/start_time_minutes"
         android:layout_marginBottom="2dp"
-        android:textColor="#716e77"/>
+        android:text="@string/minute"
+        android:textColor="@color/diamondHill"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/button1"
@@ -98,9 +105,10 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="69dp"
-        android:textColor="#716e77"
-        android:background="@android:color/transparent"
-        android:text="Confirm" />
+        android:background="@drawable/confirm_btn"
+        android:text="@string/confirm"
+        android:textColor="@color/asiaWorldExpo"
+        android:textSize="16sp" />
 
 
 </RelativeLayout>

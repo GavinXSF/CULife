@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/hongKong"
+    >
+    <!--<include layout="@layout/top_bar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="55dp"-->
+    <!--/>-->
+
+    <Button
+        android:id="@+id/select_stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select a stop"
+        android:textAllCaps="false"
+        android:background="@android:color/transparent"
+        android:drawableBottom="@drawable/bus"
+        android:layout_toRightOf="@id/add_new_route"
+        android:layout_toEndOf="@+id/add_new_route"
+        android:layout_above="@id/add_new_route"/>
+    <Button
+        android:id="@+id/add_new_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add a new route"
+        android:textAllCaps="false"
+        android:drawableTop="@drawable/add"
+        android:background="@android:color/transparent"
+        android:layout_centerInParent="true"/>
+    <Button
+        android:id="@+id/my_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My route"
+        android:textAllCaps="false"
+        android:background="@android:color/transparent"
+        android:drawableBottom="@drawable/route"
+        android:layout_above="@id/add_new_route"
+        android:layout_toLeftOf="@id/add_new_route"
+        android:layout_toStartOf="@id/add_new_route"/>
+
+    <Button
+        android:id="@+id/temp_button"
+        android:text="button_to_map"
+        android:layout_below="@id/add_new_route"
+        android:layout_toStartOf="@id/add_new_route"
+        android:layout_toLeftOf="@id/add_new_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

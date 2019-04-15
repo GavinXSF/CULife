@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#25CEBD</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="university">#b7e1fa</color>
+    <color name="meiFu">#098ec4</color>
+    <color name="kowloonBay">#c41832</color>
+    <color name="amTim">#22b6ed</color>
+    <color name="asiaWorldExpo">#f2f1f6</color>
+    <color name="wanChai">#d7df3f</color>
+    <color name="cheKungTemple">#fed7a6</color>
+    <color name="hongKong">#f2f1f6</color>
+    <color name="diamondHill">#69686d</color>
 </resources>
