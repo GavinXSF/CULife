@@ -85,7 +85,9 @@ public class GpsService extends IntentService {
     public void onHandleIntent(Intent intent){
         BusStop[] stopsArray = (BusStop[]) intent.getSerializableExtra("stops");
         Bus[] buses = (Bus[]) intent.getSerializableExtra("buses");
+        final ArrayList<String> stopNames = (ArrayList<String>) intent.getStringArrayListExtra("stop_names");
         ArrayList<String> possibleBuses = new ArrayList<String>();
+
         final Object[] objs = new Object[1];
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED ) {
@@ -325,8 +327,8 @@ public class GpsService extends IntentService {
                                         flag = true;
                                 }
                                 if(flag==false) {
-//                                    check by waiting time
-                                    if(((20-waitingTimes.get(busNum))<buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[stopIndex].stopName)*60)&&((20-waitingTimes.get(busNum))>-60))
+//                                    check by the first stop
+                                    if((waitingTimes.get(busNum)>-buses[busIndex.get(busNum)].passStops.indexOf(stopsArray[stopIndex].stopName)*1.0)&&(waitingTimes.get(busNum)<1.0))
                                         flag = true;
                                 }
                                 if(flag)
@@ -409,7 +411,10 @@ public class GpsService extends IntentService {
                 Handler handler=new Handler(Looper.getMainLooper());
                 handler.post(new Runnable(){
                     public void run(){
-                        Toast.makeText(getApplicationContext(), "loop3 "+userSpeed, Toast.LENGTH_LONG).show();
+                        if(possibleBuses.size()>0)
+                            Toast.makeText(getApplicationContext(), "loop3 "+userSpeed+" "+possibleBuses.get(0), Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(getApplicationContext(), "loop3 "+userSpeed+"no possible buses", Toast.LENGTH_LONG).show();
                     }
                 });
                 int the_index = -1;
@@ -520,9 +525,10 @@ public class GpsService extends IntentService {
                         if(the_index==-1)//if the_index is not initialized,i.e, only one possible bus at the beginnning
                             the_index = buses[busIndex.get(possibleBuses.get(0))].passStops.indexOf(lastStop);
                         // check if the bus still stop at the same stop
+                        int theStopIndex =  stopNames.indexOf(lastStop);
                         Location stopLocation = new Location("");
-                        stopLocation.setLatitude(stopsArray[the_index].Latitude);
-                        stopLocation.setLongitude(stopsArray[the_index].Longitude);
+                        stopLocation.setLatitude(stopsArray[theStopIndex].Latitude);
+                        stopLocation.setLongitude(stopsArray[theStopIndex].Longitude);
                         double distance = location.distanceTo(stopLocation);
                         if(distance<20.0) {
                             if(writing_count>=24)//if this user already stay at the same stop for 2mins, stop tracking their gps
@@ -574,9 +580,10 @@ public class GpsService extends IntentService {
                             lastLocation = location;
                             continue;
                         }
-                        //if not, check if it arrives at another stpo
-                        stopLocation.setLatitude(stopsArray[the_index+1].Latitude);
-                        stopLocation.setLongitude(stopsArray[the_index+1].Longitude);
+                        //if not, check if it arrives at another stop
+                        theStopIndex = stopNames.indexOf(buses[busIndex.get(possibleBuses.get(0))].passStops.get(the_index+1));
+                        stopLocation.setLatitude(stopsArray[theStopIndex].Latitude);
+                        stopLocation.setLongitude(stopsArray[theStopIndex].Longitude);
                         distance = location.distanceTo(stopLocation);
                         if(distance<20.0){
                             //write to mysql

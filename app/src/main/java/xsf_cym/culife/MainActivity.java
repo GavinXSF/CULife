@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(MainActivity.this, GpsService.class);
         serviceIntent.putExtra("stops",stopsArray);
         serviceIntent.putExtra("buses",buses_final);
+        serviceIntent.putExtra("stop_names",initializedStops);
         startService(serviceIntent);
 
         super.onCreate(savedInstanceState);
