@@ -149,9 +149,20 @@ public class MainFragment extends Fragment {
         });
 
 
+//          这里尝试从fragment向fragment通信, 应该不对
+//        Intent my_route = new Intent(getActivity(), MyRouteFragment.class);
+//        my_route.putExtra("stops",stopsArray);
+//        my_route.putExtra("buses",buses_final);
+//        my_route.putExtra("stop_names",initializedStops);
+
+
 
 
         return view;
 
     }
+
+
+
+
 }

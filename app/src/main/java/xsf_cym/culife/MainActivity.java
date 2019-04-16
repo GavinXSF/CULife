@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+//  使用别的滑动方式的一次尝试
 //    @Override
 //    public boolean dispatchTouchEvent(MotionEvent ev) {
 //        mGestureDetector.onTouchEvent(ev);
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+// 原来的activity
 //        Button SelectStop = findViewById(R.id.select_stop);
 //        Button AddNewRoute = findViewById(R.id.add_new_route);
 //        Button MyRoute = findViewById(R.id.my_route);
