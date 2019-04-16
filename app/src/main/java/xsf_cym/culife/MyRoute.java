@@ -136,15 +136,8 @@ public class MyRoute extends AppCompatActivity {
                         firstHalf.add("Line " + busNum + ": Due\nEstimated travel time: ");
                 }
 
-
-
-
-
-
-
-
            //     Log.d("Tsai", stopsArray[stopNames.indexOf(routes[i].destination)].stopName +" "+routes[i].startPosition+" "+routes[i].destination+"  "+routes[i].validBus[0]+" "+routes[i].validBus[1]+" "+routes[i].validBus[2]);
-                displayInfo.add("Route"+(i+1)+ "/n" + routes[i].startPosition + " → " + routes[i].destination + "/n" + routes[i].startTime/100 + ":" + routes[i].startTime%100);
+                displayInfo.add("Route"+(i+1)+ "\n" + routes[i].startPosition + " → \n" + routes[i].destination + "\n" + routes[i].startTime/100 + ":" + String.format("%0"+2+"d", routes[i].startTime%100));
                 int index = 0;
 
                 for(int j = 0; j < firstHalf.size(); j++){
@@ -154,7 +147,7 @@ public class MyRoute extends AppCompatActivity {
                             break;
                         }
                     }
-                    displayInfo.add(firstHalf.get(j)+ nf.format(buses[index - 1].estimateTime(routes[i].startPosition,routes[i].destination)) + " mins/n");
+                    displayInfo.add(firstHalf.get(j)+ nf.format(buses[index - 1].estimateTime(routes[i].startPosition,routes[i].destination)) + " mins");
                 }
             }
         }
@@ -162,13 +155,5 @@ public class MyRoute extends AppCompatActivity {
         myAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,displayInfo);
         myListView.setAdapter(myAdapter);
 
-
-
-
-        ActionBar topBar = getSupportActionBar();
-        topBar.hide();
-
-        TextView updateTopbar = findViewById(R.id.topbar_textview);
-        updateTopbar.setText("My Route");
     }
 }

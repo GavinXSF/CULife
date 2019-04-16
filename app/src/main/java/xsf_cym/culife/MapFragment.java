@@ -23,11 +23,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-import xsf_cym.culife.R;
-
 import static android.content.Context.LOCATION_SERVICE;
 
-public class SecondFragment extends Fragment {
+
+// This is Fragment of Google Map
+public class MapFragment extends Fragment {
     private GoogleMap mMap;
     private LatLng mLatLng;
     private LocationManager locationManager;
@@ -40,32 +40,24 @@ public class SecondFragment extends Fragment {
 
 
 
-    public static SecondFragment newInstance() {
-        return new SecondFragment();
+    public static MapFragment newInstance() {
+        return new MapFragment();
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState ) {
 
         super.onCreate(savedInstanceState);
-
         getActivity().setTitle("My location");
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.map);
 
-
-
-//        mapFragment.getMapAsync( getActivity());
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }else {
-
-
-
             locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
             List<String> providers = locationManager.getProviders(true);
             if (providers.contains(LocationManager.GPS_PROVIDER)) {
@@ -119,18 +111,16 @@ public class SecondFragment extends Fragment {
 
         }
 
-        return inflater.inflate(R.layout.fragment_second, container, false);
+
+        View view =  inflater.inflate(R.layout.fragment_map, container, false);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this::onMapReady);
+
+
+        return view;
     }
-
-//    @Override
-//    public void onViewCreated(View view,  Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-//        supportMapFragment.getMapAsync(getActivity());
-//    }
-
-
 
 
     private void showLocation(Location location) {
@@ -138,10 +128,9 @@ public class SecondFragment extends Fragment {
     }
 
 
-
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setMinZoomPreference(20);
         // Add a marker in Sydney and move the camera
         mLatLng = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(mLatLng).title("Marker at My location"));

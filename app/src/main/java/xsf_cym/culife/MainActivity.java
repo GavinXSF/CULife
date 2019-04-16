@@ -8,23 +8,12 @@ import android.content.res.AssetManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -137,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         final Map<Integer, Fragment> data = new TreeMap<>();
 //        data.put(0, FirstFragment.newInstance());
         data.put(0, MainFragment.newInstance());
-        data.put(1, SecondFragment.newInstance());
+        data.put(1, MapFragment.newInstance());
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
 

@@ -104,13 +104,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
-
-//        SupportMapFragment mMapFragment = SupportMapFragment.newInstance();
-//        FragmentTransaction fragmentTransaction = this.getChildFragmentManager().beginTransaction();
-//        fragmentTransaction.add(R.id.map, mMapFragment);
-//        fragmentTransaction.commit();
-//        mMapFragment.getMapAsync(this);
-
     }
 
     private void showLocation(Location location) {
@@ -124,6 +117,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         mLatLng = new LatLng(latitude, longitude);
+        mMap.setMinZoomPreference(20);
         mMap.addMarker(new MarkerOptions().position(mLatLng).title("Marker at My location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mLatLng));
     }
