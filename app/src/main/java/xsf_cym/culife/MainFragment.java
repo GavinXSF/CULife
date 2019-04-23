@@ -24,7 +24,6 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState ) {
-        getActivity().setTitle("CULife");
 
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
@@ -104,16 +103,7 @@ public class MainFragment extends Fragment {
         Button AddNewRoute = view.findViewById(R.id.add_new_route);
         Button MyRoute = view.findViewById(R.id.my_route);
 
-        // 这里是之前的temp_button, 跳转到MapActivity的, 现在使用MapFragment用不着了
-//        Button TempButton = view.findViewById(R.id.temp_button);
-//        TempButton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                Intent temp_intent = new Intent(getActivity(), MapsActivity.class);
-//                startActivity(temp_intent);
-//            }
-//
-//        });
+
 
         SelectStop.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,20 +139,10 @@ public class MainFragment extends Fragment {
         });
 
 
-//          这里尝试从fragment向fragment通信, 应该不对
-//        Intent my_route = new Intent(getActivity(), MyRouteFragment.class);
-//        my_route.putExtra("stops",stopsArray);
-//        my_route.putExtra("buses",buses_final);
-//        my_route.putExtra("stop_names",initializedStops);
-
-
-
 
         return view;
 
     }
-
-
 
 
 }
