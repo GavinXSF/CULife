@@ -1,5 +1,6 @@
 package xsf_cym.culife;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -166,160 +168,19 @@ public class MainFragment extends Fragment {
         //使用List存入HashMap，用來顯示ListView上面的文字。
 
         String[] title = new String[]{"1A","1B", "2","3","4","5","6A","6B", "7","8","N","H"};
-        String[] text  = new String[]{"University MTR Station->" +
-                "University Sports Centre->" +
-                "Sir Run Run Shaw Hall->" +
-                "University Administration Building->" +
-                "S.H. Ho College->" +
-                "University MTR Station",
-
-                "University MTR Station->" +
-                        "University Sports Centre->" +
-                        "*Sir Run Run Shaw Hall->" +
-                        "Fung King-hey Building->" +
-                        "United College->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College->" +
-                        "University MTR Station",
-
-                "University MTR Station->" +
-                        "Jockey Club Postgraduate Hall->" +
-                        "University Sports Centre->" +
-                        "Sir Run Run Shaw Hall->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College->" +
-                        "Jockey Club Postgraduate Hall->" +
-                        "University MTR Station",
-
-                "Yasumoto International Academic Park->" +
-                        "University Sports Centre->" +
-                        "Science Centre->" +
-                        "Fung King-hey Building->" +
-                        "Residences 3 & 4->" +
-                        "Shaw College->->" +
-                        "C.W. Chu College->" +
-                        "Residence 15->" +
-                        "United College Staff Residence->" +
-                        "Chan Chun Ha Hostel->" +
-                        "Shaw College->" +
-                        "Residences 3 & 4->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College->" +
-                        "University MTR Station Piazza",
-
-                "Yasumoto International Academic Park->" +
-                        "Campus Circuit East->" +
-                        "C.W. Chu College->" +
-                        "Area 39->" +
-                        "C.W. Chu College->" +
-                        "Residence 15->" +
-                        "United College Staff Residence->" +
-                        "Chan Chun Ha Hostel->" +
-                        "Shaw College->" +
-                        "Residences 3 & 4->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College->" +
-                        "University MTR Station",
-
-                "Chung Chi Teaching Blocks->" +
-                        "University Sports Centre->" +
-                        "Sir Run Run Shaw Hall->" +
-                        "Fung King-hey Building->" +
-                        "United College->" +
-                        "New Asia College->" +
-                        "Residences 3 & 4->" +
-                        "Shaw College->" +
-                        "*C.W. Chu College",
-
-                "C.W. Chu College->" +
-                        "United College Staff Residence->" +
-                        "Chan Chun Ha Hostel->" +
-                        "Residences 3 & 4->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College->" +
-                        "University MTR Station Piazza->" +
-                        "Chung Chi Teaching Blocks",
-
-                "New Asia College->->" +
-                        "United College->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College->" +
-                        "University MTR Station Piazza->" +
-                        "Chung Chi Teaching Blocks",
-
-                "Shaw College->" +
-                        "Residences 3 & 4->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College->" +
-                        "University MTR Station Piazza->" +
-                        "Chung Chi Teaching Blocks",
-
-                "Area 39->" +
-                        "C.W. Chu College->" +
-                        "United College Staff Residence->" +
-                        "Chan Chun Ha Hostel->" +
-                        "Shaw College->" +
-                        "Residences 3 & 4->" +
-                        "University Administration Building->" +
-                        "Science Centre->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "Residences 3 & 4->" +
-                        "Shaw College->" +
-                        "Area 39->" +
-                        "Campus Circuit North->" +
-                        "Campus Circuit East->" +
-                        "University MTR Station",
-
-                "University MTR Station->" +
-                        "*Jockey Club Postgraduate Hall->" +
-                        "University Sports Centre->" +
-                        "Sir Run Run Shaw Hall->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "Residences 3 & 4->" +
-                        "Shaw College->" +
-                        "Area 39->" +
-                        "C.W. Chu College->" +
-                        "Residence 15->" +
-                        "United College Staff Residence->" +
-                        "Chan Chun Ha Hostel->" +
-                        "Shaw College->" +
-                        "Residences 3 & 4->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College",
-
-                "University MTR Station->" +
-                        "University Sports Centre->" +
-                        "Sir Run Run Shaw Hall->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "Residences 3 & 4->" +
-                        "Shaw College->" +
-                        "*Area 39->" +
-                        "C.W. Chu College->" +
-                        "Residence 10->" +
-                        "Residence 15->" +
-                        "United College Staff Residence->" +
-                        "Chan Chun Ha Hostel->" +
-                        "Shaw College->" +
-                        "Residences 3 & 4->" +
-                        "New Asia College->" +
-                        "United College->" +
-                        "University Administration Building->" +
-                        "S.H. Ho College->" +
-                        "University MTR Station"
-
+        String[] text  = new String[]{
+                "07:40 — 18:40\n"+"Every 20, 40 minute of the hour",
+                "08:00 — 18:00\n"+" Every 00 minute of the hour",
+                "07:45 — 18:45\n"+"Every *00, 15, 30, *45 minute of the hour",
+                "09:00 — 18:40\n"+"Every 00, 20, 40 minute of the hour",
+                "07:30 — 18:50\n"+"Every 10, 30, 50 minute of the hour",
+                "08:50 — 17:50\n"+"Every 18, *25, 50 minute of the hour",
+                "09:10 — 17:10\n"+"Every 10 minute of the hour",
+                "12:20 — 17:20\n"+"Every 20 minute of the hour",
+                "08:18 — 17:50\n"+"Every 18, 50 minute of the hour",
+                "07:40 — 18:40\n"+"Every 00, 20, 40 minute of the hour",
+                "19:00 — 23:30\n"+" Every *00, 15, 30, 45 minute of the hour",
+                "08:20 — 23:20\n"+"Every *00, 20, 40 minute of the hour"
         };
         for(int i = 0 ; i < title.length ; i++){
             HashMap<String , String> hashMap = new HashMap<>();
@@ -340,8 +201,180 @@ public class MainFragment extends Fragment {
                 new String[]{"title" , "text"} ,
                 new int[]{android.R.id.text1 , android.R.id.text2});
         // 5個參數 : context , List , layout , key1 & key2 , text1 & text2
-
         listView.setAdapter(listAdapter);
+
+
+        AlertDialog.Builder alertDialogBuilder=new AlertDialog.Builder(getActivity());
+        alertDialogBuilder.setIcon(R.drawable.bus);
+
+        String[] contents = new String[]{
+                "University MTR Station\n" +
+                "University Sports Centre\n" +
+                "Sir Run Run Shaw Hall\n" +
+                "University Administration Building\n" +
+                "S.H. Ho College\n" +
+                "University MTR Station",
+
+                "University MTR Station\n" +
+                        "University Sports Centre\n" +
+                        "*Sir Run Run Shaw Hall\n" +
+                        "Fung King-hey Building\n" +
+                        "United College\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College\n" +
+                        "University MTR Station",
+
+                "University MTR Station\n" +
+                        "Jockey Club Postgraduate Hall\n" +
+                        "University Sports Centre\n" +
+                        "Sir Run Run Shaw Hall\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College\n" +
+                        "Jockey Club Postgraduate Hall\n" +
+                        "University MTR Station",
+
+                "Yasumoto International Academic Park\n" +
+                        "University Sports Centre\n" +
+                        "Science Centre\n" +
+                        "Fung King-hey Building\n" +
+                        "Residences 3 & 4\n" +
+                        "Shaw College\n" +
+                        "C.W. Chu College\n" +
+                        "Residence 15\n" +
+                        "United College Staff Residence\n" +
+                        "Chan Chun Ha Hostel\n" +
+                        "Shaw College\n" +
+                        "Residences 3 & 4\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College\n" +
+                        "University MTR Station Piazza",
+
+                "Yasumoto International Academic Park\n" +
+                        "Campus Circuit East\n" +
+                        "C.W. Chu College\n" +
+                        "Area 39\n" +
+                        "C.W. Chu College\n" +
+                        "Residence 15\n" +
+                        "United College Staff Residence\n" +
+                        "Chan Chun Ha Hostel\n" +
+                        "Shaw College\n" +
+                        "Residences 3 & 4\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College\n" +
+                        "University MTR Station",
+
+                "Chung Chi Teaching Blocks\n" +
+                        "University Sports Centre\n" +
+                        "Sir Run Run Shaw Hall\n" +
+                        "Fung King-hey Building\n" +
+                        "United College\n" +
+                        "New Asia College\n" +
+                        "Residences 3 & 4\n" +
+                        "Shaw College\n" +
+                        "*C.W. Chu College",
+
+                "C.W. Chu College\n" +
+                        "United College Staff Residence\n" +
+                        "Chan Chun Ha Hostel\n" +
+                        "Residences 3 & 4\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College\n" +
+                        "University MTR Station Piazza\n" +
+                        "Chung Chi Teaching Blocks",
+
+                "New Asia College\n" +
+                        "United College\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College\n" +
+                        "University MTR Station Piazza\n" +
+                        "Chung Chi Teaching Blocks",
+
+                "Shaw College\n" +
+                        "Residences 3 & 4\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College\n" +
+                        "University MTR Station Piazza\n" +
+                        "Chung Chi Teaching Blocks",
+
+                "Area 39\n" +
+                        "C.W. Chu College\n" +
+                        "United College Staff Residence\n" +
+                        "Chan Chun Ha Hostel\n" +
+                        "Shaw College\n" +
+                        "Residences 3 & 4\n" +
+                        "University Administration Building\n" +
+                        "Science Centre\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "Residences 3 & 4\n" +
+                        "Shaw College\n" +
+                        "Area 39\n" +
+                        "Campus Circuit North\n" +
+                        "Campus Circuit East\n" +
+                        "University MTR Station",
+
+                "University MTR Station\n" +
+                        "*Jockey Club Postgraduate Hall\n" +
+                        "University Sports Centre\n" +
+                        "Sir Run Run Shaw Hall\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "Residences 3 & 4\n" +
+                        "Shaw College\n" +
+                        "Area 39\n" +
+                        "C.W. Chu College\n" +
+                        "Residence 15\n" +
+                        "United College Staff Residence\n" +
+                        "Chan Chun Ha Hostel\n" +
+                        "Shaw College\n" +
+                        "Residences 3 & 4\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College",
+
+                "University MTR Station\n" +
+                        "University Sports Centre\n" +
+                        "Sir Run Run Shaw Hall\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "Residences 3 & 4\n" +
+                        "Shaw College\n" +
+                        "*Area 39\n" +
+                        "C.W. Chu College\n" +
+                        "Residence 10\n" +
+                        "Residence 15\n" +
+                        "United College Staff Residence\n" +
+                        "Chan Chun Ha Hostel\n" +
+                        "Shaw College\n" +
+                        "Residences 3 & 4\n" +
+                        "New Asia College\n" +
+                        "United College\n" +
+                        "University Administration Building\n" +
+                        "S.H. Ho College\n" +
+                        "University MTR Station"};
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                alertDialogBuilder.setTitle(title[position]);
+                alertDialogBuilder.setMessage(contents[position]);
+                alertDialogBuilder.setCancelable(true);
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+
+            }
+        });
     }
 
 }
