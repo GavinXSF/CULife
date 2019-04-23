@@ -213,7 +213,7 @@ public class SelectStop extends AppCompatActivity {
 
 
         btn = (Button) findViewById(R.id.btn1);
-        btn2 = (Button) findViewById(R.id.btn2);
+//        btn2 = (Button) findViewById(R.id.btn2);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -367,109 +367,109 @@ public class SelectStop extends AppCompatActivity {
 
             }
         });
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                            double[] data = new double[4];
-                            int indexOfCurrentStop = buses[2].passStops.indexOf(stopsArray[selectedStop].stopName);
-                            double bestTime;
-                            long timeFromDB = -1;
-                            int stopIndexOfData = -1;
-                            Object[] objs = new Object[2];
-                            for(int i = indexOfCurrentStop+1;i<indexOfCurrentStop+5;i++) {
-                                if(i>buses[2].passStops.size()-1)
-                                    break;
-                                waitingTimes = stopsArray[stopNames.indexOf(buses[2].passStops.get(i))].waitingTime(inputNum);
-                                Connection connection = null;
-                                try {
-
-                                    Class.forName("com.mysql.jdbc.Driver");
-                                    String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
-                                    Log.d("Tsai", "getting connection btn2");
-                                    connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
-                                    Log.d("Tsai", "connection set btn2");
-                                } catch (SQLException ex) {
-                                    ex.printStackTrace();
-                                } catch (ClassNotFoundException ex) {
-                                    ex.printStackTrace();
-                                }
-                                try {
-                                    Statement st = connection.createStatement();
-                                    String sql = "SELECT * FROM busInfo WHERE busNum='3' and stopIndex between " +
-                                            (i - 4) + " and " +
-                                            (i - 1) +
-                                            " ORDER BY id DESC LIMIT 1";
-                                    ResultSet rs = st.executeQuery(sql);
-                                    if (rs.next()) {
-
-                                        objs[0] = rs.getLong("time");
-                                        Log.d("Tsai", "onClick: " + (long) objs[0]);
-                                        objs[1] = rs.getInt("stopIndex");
-                                        connection.close();
-                                    } else {
-                                        Log.d("Tsai", "No such result");
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                                if (objs[0] != null) {
-                                    timeFromDB = (long) objs[0];
-                                    stopIndexOfData = (int) objs[1];
-                                    Log.d("Tsai", "Got it btn2");
-                                    int travelTime = (int) (60 * buses[2].estimateTime(buses[2].passStops.get(stopIndexOfData), buses[2].passStops.get(i)));
-                                    long now = System.currentTimeMillis();
-                                    long bestTimeInSeconds = (timeFromDB - now) / 1000 + travelTime;
-                                    double errorAllowance = (i - stopIndexOfData) * 2.0;
-                                    double tempConverter = (double) bestTimeInSeconds;
-                                    bestTime = tempConverter / 60.0;
-                                    if (bestTime < -errorAllowance)
-                                        bestTime = waitingTimes.get("3");
-                                } else {
-                                    bestTime = waitingTimes.get("3");
-                                    Log.d("Tsai", "Miss it btn2");
-                                }
-                                NumberFormat nf = NumberFormat.getNumberInstance();
-                                // 保留一位小数
-                                nf.setMaximumFractionDigits(1);
-                                nf.setRoundingMode(RoundingMode.UP);
-                                data[i-indexOfCurrentStop-1]=bestTime;
-                            }
-                            if(data[3]!=0.0){
-                                Connection connection = null;
-                                try {
-
-                                    Class.forName("com.mysql.jdbc.Driver");
-                                    String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
-                                    Log.d("Tsai", "getting connection btn2 w");
-                                    connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
-                                    Log.d("Tsai", "connection set btn2 w"+data[0]+" "+data[1]+" "+data[2]);
-                                } catch (SQLException ex) {
-                                    ex.printStackTrace();
-                                } catch (ClassNotFoundException ex) {
-                                    ex.printStackTrace();
-                                }
-                                try {
-                                    Statement st = connection.createStatement();
-
-                                    String sql = "INSERT INTO test(now,one,two,three,four) VALUES('"+System.currentTimeMillis()+ "','"+data[0]+"','"+data[1]+"','"+data[2]+"','"+data[3]+"')";
-                                    int result = st.executeUpdate(sql);
-                                    connection.close();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-
-
-                    }});
-                thread.start();
-            }
-            });
+//        btn2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                            double[] data = new double[4];
+//                            int indexOfCurrentStop = buses[2].passStops.indexOf(stopsArray[selectedStop].stopName);
+//                            double bestTime;
+//                            long timeFromDB = -1;
+//                            int stopIndexOfData = -1;
+//                            Object[] objs = new Object[2];
+//                            for(int i = indexOfCurrentStop+1;i<indexOfCurrentStop+5;i++) {
+//                                if(i>buses[2].passStops.size()-1)
+//                                    break;
+//                                waitingTimes = stopsArray[stopNames.indexOf(buses[2].passStops.get(i))].waitingTime(inputNum);
+//                                Connection connection = null;
+//                                try {
+//
+//                                    Class.forName("com.mysql.jdbc.Driver");
+//                                    String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
+//                                    Log.d("Tsai", "getting connection btn2");
+//                                    connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+//                                    Log.d("Tsai", "connection set btn2");
+//                                } catch (SQLException ex) {
+//                                    ex.printStackTrace();
+//                                } catch (ClassNotFoundException ex) {
+//                                    ex.printStackTrace();
+//                                }
+//                                try {
+//                                    Statement st = connection.createStatement();
+//                                    String sql = "SELECT * FROM busInfo WHERE busNum='3' and stopIndex between " +
+//                                            (i - 4) + " and " +
+//                                            (i - 1) +
+//                                            " ORDER BY id DESC LIMIT 1";
+//                                    ResultSet rs = st.executeQuery(sql);
+//                                    if (rs.next()) {
+//
+//                                        objs[0] = rs.getLong("time");
+//                                        Log.d("Tsai", "onClick: " + (long) objs[0]);
+//                                        objs[1] = rs.getInt("stopIndex");
+//                                        connection.close();
+//                                    } else {
+//                                        Log.d("Tsai", "No such result");
+//                                    }
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                                if (objs[0] != null) {
+//                                    timeFromDB = (long) objs[0];
+//                                    stopIndexOfData = (int) objs[1];
+//                                    Log.d("Tsai", "Got it btn2");
+//                                    int travelTime = (int) (60 * buses[2].estimateTime(buses[2].passStops.get(stopIndexOfData), buses[2].passStops.get(i)));
+//                                    long now = System.currentTimeMillis();
+//                                    long bestTimeInSeconds = (timeFromDB - now) / 1000 + travelTime;
+//                                    double errorAllowance = (i - stopIndexOfData) * 2.0;
+//                                    double tempConverter = (double) bestTimeInSeconds;
+//                                    bestTime = tempConverter / 60.0;
+//                                    if (bestTime < -errorAllowance)
+//                                        bestTime = waitingTimes.get("3");
+//                                } else {
+//                                    bestTime = waitingTimes.get("3");
+//                                    Log.d("Tsai", "Miss it btn2");
+//                                }
+//                                NumberFormat nf = NumberFormat.getNumberInstance();
+//                                // 保留一位小数
+//                                nf.setMaximumFractionDigits(1);
+//                                nf.setRoundingMode(RoundingMode.UP);
+//                                data[i-indexOfCurrentStop-1]=bestTime;
+//                            }
+//                            if(data[3]!=0.0){
+//                                Connection connection = null;
+//                                try {
+//
+//                                    Class.forName("com.mysql.jdbc.Driver");
+//                                    String jdbcUrl = String.format("jdbc:mysql://34.92.5.65:3306/culife");
+//                                    Log.d("Tsai", "getting connection btn2 w");
+//                                    connection = DriverManager.getConnection(jdbcUrl, "root", "carlos0923=-=");
+//                                    Log.d("Tsai", "connection set btn2 w"+data[0]+" "+data[1]+" "+data[2]);
+//                                } catch (SQLException ex) {
+//                                    ex.printStackTrace();
+//                                } catch (ClassNotFoundException ex) {
+//                                    ex.printStackTrace();
+//                                }
+//                                try {
+//                                    Statement st = connection.createStatement();
+//
+//                                    String sql = "INSERT INTO test(now,one,two,three,four) VALUES('"+System.currentTimeMillis()+ "','"+data[0]+"','"+data[1]+"','"+data[2]+"','"+data[3]+"')";
+//                                    int result = st.executeUpdate(sql);
+//                                    connection.close();
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//
+//                            }
+//
+//
+//                    }});
+//                thread.start();
+//            }
+//            });
 
     }
 }

@@ -124,7 +124,7 @@ public class MapFragment extends Fragment {
 
 
     private void showLocation(Location location) {
-        Toast.makeText(getActivity(),"Latitude is:"+location.getLatitude()+"/n Longitude is: "+location.getLongitude(),Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(),"Latitude is:"+location.getLatitude()+"/n Longitude is: "+location.getLongitude(),Toast.LENGTH_LONG).show();
     }
 
 

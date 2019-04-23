@@ -107,7 +107,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void showLocation(Location location) {
-        Toast.makeText(this,"Latitude is:"+location.getLatitude()+"/n Longitude is: "+location.getLongitude(),Toast.LENGTH_LONG).show();
+//        Toast.makeText(this,"Latitude is:"+location.getLatitude()+"/n Longitude is: "+location.getLongitude(),Toast.LENGTH_LONG).show();
     }
 
 

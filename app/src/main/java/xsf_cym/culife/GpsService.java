@@ -177,16 +177,16 @@ public class GpsService extends IntentService {
             busIndex.put("1B",11);
             while(true){  //firstly, check if the user is at one of the bus stop
                 Handler handler=new Handler(Looper.getMainLooper());
-                handler.post(new Runnable(){
-                    public void run(){
-
-                        Location stopLocation = new Location("");
-                        stopLocation.setLatitude(22.4224589);
-                        stopLocation.setLongitude(114.2012769);
-                        double distance = location.distanceTo(stopLocation);
-                        Toast.makeText(getApplicationContext(), "loop1 "+count+" "+distance, Toast.LENGTH_LONG).show();
-                    }
-                });
+//                handler.post(new Runnable(){
+//                    public void run(){
+//
+//                        Location stopLocation = new Location("");
+//                        stopLocation.setLatitude(22.4224589);
+//                        stopLocation.setLongitude(114.2012769);
+//                        double distance = location.distanceTo(stopLocation);
+//                        Toast.makeText(getApplicationContext(), "loop1 "+count+" "+distance, Toast.LENGTH_LONG).show();
+//                    }
+//                });
                 double min = 999;
                 int nearest = -1;
                 for(int i = 0; i <stopsArray.length;i++ ){
@@ -243,11 +243,11 @@ public class GpsService extends IntentService {
                 long getOnTime = 0;
                 double userSpeed = calculatedSpeed;
                 Handler handler=new Handler(Looper.getMainLooper());
-                handler.post(new Runnable(){
-                    public void run(){
-                        Toast.makeText(getApplicationContext(), "loop2 "+userSpeed, Toast.LENGTH_LONG).show();
-                    }
-                });
+//                handler.post(new Runnable(){
+//                    public void run(){
+//                        Toast.makeText(getApplicationContext(), "loop2 "+userSpeed, Toast.LENGTH_LONG).show();
+//                    }
+//                });
                 if(userSpeed>4){
 
                     //possible problem: if a user pass by a bus stop and take other forms of transportation
@@ -409,14 +409,14 @@ public class GpsService extends IntentService {
 
                 double userSpeed = calculatedSpeed;
                 Handler handler=new Handler(Looper.getMainLooper());
-                handler.post(new Runnable(){
-                    public void run(){
-                        if(possibleBuses.size()>0)
-                            Toast.makeText(getApplicationContext(), "loop3 "+userSpeed+" "+possibleBuses.get(0), Toast.LENGTH_LONG).show();
-                        else
-                            Toast.makeText(getApplicationContext(), "loop3 "+userSpeed+"no possible buses", Toast.LENGTH_LONG).show();
-                    }
-                });
+//                handler.post(new Runnable(){
+//                    public void run(){
+//                        if(possibleBuses.size()>0)
+//                            Toast.makeText(getApplicationContext(), "loop3 "+userSpeed+" "+possibleBuses.get(0), Toast.LENGTH_LONG).show();
+//                        else
+//                            Toast.makeText(getApplicationContext(), "loop3 "+userSpeed+"no possible buses", Toast.LENGTH_LONG).show();
+//                    }
+//                });
                 int the_index = -1;
                 if(userSpeed<1){
                     int currentStop = -1;
