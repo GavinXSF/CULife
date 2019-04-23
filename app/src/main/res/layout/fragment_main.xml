@@ -8,11 +8,12 @@
     <ListView
         android:id="@+id/raw_bus_list"
         android:layout_width="match_parent"
-        android:layout_height="625dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="match_parent"
+
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="125dp"
         app:layout_constraintBottom_toTopOf="@+id/select_stop"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -27,6 +28,7 @@
         android:drawableBottom="@drawable/bus_stop"
         android:text="@string/select_a_stop"
         android:textAllCaps="false"
+        android:textColor="@color/meiFu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -40,6 +42,7 @@
         android:drawableBottom="@drawable/route2"
         android:text="@string/my_route"
         android:textAllCaps="false"
+        android:textColor="@color/meiFu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/select_stop" />
@@ -53,6 +56,7 @@
         android:drawableBottom="@drawable/add2"
         android:background="@android:color/transparent"
         android:textAllCaps="false"
+        android:textColor="@color/meiFu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/select_stop"
         app:layout_constraintStart_toStartOf="parent" />
