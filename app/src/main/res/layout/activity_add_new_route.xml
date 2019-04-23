@@ -59,7 +59,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:text="@string/start_stop"
-        android:textColor="@color/diamondHill"
+        android:textColor="#077cb0"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:text="@string/end_stop"
-        android:textColor="@color/diamondHill"
+        android:textColor="@color/meiFu"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
         android:layout_alignLeft="@id/start_time_hours"
         android:layout_marginBottom="2dp"
         android:text="@string/hour"
-        android:textColor="@color/diamondHill"
+        android:textColor="#0798c7"
         android:textSize="16sp" />
 
     <TextView
@@ -96,7 +96,7 @@
         android:layout_alignLeft="@id/start_time_minutes"
         android:layout_marginBottom="2dp"
         android:text="@string/minute"
-        android:textColor="@color/diamondHill"
+        android:textColor="#0798c7"
         android:textSize="16sp" />
 
     <Button

@@ -5,15 +5,20 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.content.res.AssetManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> stopInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+//        this.setTitle("CULife");
+
 //        mGestureDetector = new GestureDetectorCompat(this, new LocalGestureListener());
 
         //the following checks user permissions and asks to request those permissions
@@ -123,12 +130,43 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         final Map<Integer, Fragment> data = new TreeMap<>();
-//        data.put(0, FirstFragment.newInstance());
-        data.put(0, MainFragment.newInstance());
-        data.put(1, MapFragment.newInstance());
+
+        data.put(0, shortcutFragment.newInstance());
+        data.put(1, MainFragment.newInstance());
+        data.put(2, MapFragment.newInstance());
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("XSF:  ",String.valueOf(position));
+                switch (position){
+                    case 0:
+                        setTitle("Shortcuts");
+                        break;
+                    case 1:
+                        setTitle("CULife");
+                        break;
+                    case 2:
+                        setTitle("My Location");
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
 
         viewPager.setAdapter(new FragmentStatePagerAdapter(
                 getSupportFragmentManager()) {
@@ -142,15 +180,14 @@ public class MainActivity extends AppCompatActivity {
                 return data.size();
             }
         });
-//        viewPager.setCurrentItem(viewPager.getAdapter().getCount()-1);
-
+        viewPager.setCurrentItem(1);
     }
 
 
 
 
 
-
+//  使用别的滑动方式的一次尝试
 //    @Override
 //    public boolean dispatchTouchEvent(MotionEvent ev) {
 //        mGestureDetector.onTouchEvent(ev);
@@ -203,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+// 原来的activity
 //        Button SelectStop = findViewById(R.id.select_stop);
 //        Button AddNewRoute = findViewById(R.id.add_new_route);
 //        Button MyRoute = findViewById(R.id.my_route);
@@ -254,24 +291,28 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()){
-            case R.id.library_item:
-                Intent browse_library_info = new Intent(Intent.ACTION_VIEW);
-                browse_library_info.setData(Uri.parse("http://www.cuhk.edu.hk/chinese/campus/library-museum.html"));
-                startActivity(browse_library_info);
-                break;
-            case R.id.canteen_item:
-                Intent browse_canteen_info = new Intent(Intent.ACTION_VIEW);
-                browse_canteen_info.setData(Uri.parse("http://www.cuhk.edu.hk/chinese/campus/accommodation.html#canteen_info"));
-                startActivity(browse_canteen_info);
-                break;
-            default:
-        }
-        return true;
-    }
+//    public boolean onCreateOptionsMenu(Menu menu){
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        return true;
+//    }
+//    public boolean onOptionsItemSelected(MenuItem item){
+//        switch(item.getItemId()){
+//            case R.id.library_item:
+//                Intent browse_library_info = new Intent(Intent.ACTION_VIEW);
+//                browse_library_info.setData(Uri.parse("http://www.cuhk.edu.hk/chinese/campus/library-museum.html"));
+//                startActivity(browse_library_info);
+//                break;
+//            case R.id.canteen_item:
+//                Intent browse_canteen_info = new Intent(Intent.ACTION_VIEW);
+//                browse_canteen_info.setData(Uri.parse("http://www.cuhk.edu.hk/chinese/campus/accommodation.html#canteen_info"));
+//                startActivity(browse_canteen_info);
+//                break;
+//            default:
+//        }
+//        return true;
+//    }
+
+
+
+
 }

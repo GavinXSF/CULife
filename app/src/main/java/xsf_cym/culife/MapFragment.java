@@ -51,7 +51,7 @@ public class MapFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState ) {
 
         super.onCreate(savedInstanceState);
-        getActivity().setTitle("My location");
+
 
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) !=
@@ -146,4 +146,6 @@ public class MapFragment extends Fragment {
             locationManager.removeUpdates(locationListener);
         }
     }
+
+
 }

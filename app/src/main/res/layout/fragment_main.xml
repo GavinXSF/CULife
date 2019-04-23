@@ -1,54 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/hongKong"
-    >
-    <!--<include layout="@layout/top_bar"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="55dp"-->
-    <!--/>-->
+    android:layout_height="match_parent">
+
+
+    <ListView
+        android:id="@+id/raw_bus_list"
+        android:layout_width="match_parent"
+        android:layout_height="625dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/select_stop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </ListView>
 
     <Button
         android:id="@+id/select_stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select a stop"
-        android:textAllCaps="false"
+        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
-        android:drawableBottom="@drawable/bus"
-        android:layout_toRightOf="@id/add_new_route"
-        android:layout_toEndOf="@+id/add_new_route"
-        android:layout_above="@id/add_new_route"/>
-    <Button
-        android:id="@+id/add_new_route"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add a new route"
+        android:drawableBottom="@drawable/bus_stop"
+        android:text="@string/select_a_stop"
         android:textAllCaps="false"
-        android:drawableTop="@drawable/add"
-        android:background="@android:color/transparent"
-        android:layout_centerInParent="true"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <Button
         android:id="@+id/my_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My route"
-        android:textAllCaps="false"
+        android:layout_marginBottom="8dp"
         android:background="@android:color/transparent"
-        android:drawableBottom="@drawable/route"
-        android:layout_above="@id/add_new_route"
-        android:layout_toLeftOf="@id/add_new_route"
-        android:layout_toStartOf="@id/add_new_route"/>
+        android:drawableBottom="@drawable/route2"
+        android:text="@string/my_route"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/select_stop" />
 
-    <!--<Button-->
-        <!--android:id="@+id/temp_button"-->
-        <!--android:text="button_to_map"-->
-        <!--android:layout_below="@id/add_new_route"-->
-        <!--android:layout_toStartOf="@id/add_new_route"-->
-        <!--android:layout_toLeftOf="@id/add_new_route"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
+    <Button
+        android:id="@+id/add_new_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/new_route"
+        android:drawableBottom="@drawable/add2"
+        android:background="@android:color/transparent"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/select_stop"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

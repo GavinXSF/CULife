@@ -1,0 +1,204 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/LinearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/sc_btn1"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Liabraty Open Time" />
+        <Button
+            android:id="@+id/sc_btn2"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Canteen Open Time" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/LinearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/sc_btn3"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="My CUHK" />
+        <Button
+            android:id="@+id/sc_btn4"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Library Booking System" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/LinearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/sc_btn5"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Veriguide" />
+        <Button
+            android:id="@+id/sc_btn6"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Attendance System" />
+
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/LinearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/sc_btn7"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Campus Facilities" />
+        <Button
+            android:id="@+id/sc_btn8"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Exam Timetable" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/LinearLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/sc_btn9"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="ITSC" />
+        <Button
+            android:id="@+id/sc_btn10"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dip"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/shortcut_btn"
+            android:gravity="center"
+            android:textAllCaps="false"
+            android:text="Career Planning Center" />
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
